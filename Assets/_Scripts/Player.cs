@@ -7,26 +7,36 @@ public class Player : MonoBehaviour {
 	public float moveSpeed;
 	//private Animator anim;
 
-	private float x;
-	private float y;
+	public float x;
+	public float y;
 
-	public Text testing;
+	public int score;
+	public int lives;
+
+	//public Text testing;
+	//public Text scoreText;
 
 	// Use this for initialization
 	void Start () {
 		//anim = gameObject.GetComponent<Animator>();
+		lives = 3;
+
 		//anim.speed = 0;
-		printTestText();
+		//printTestText();
+		//printText();
 
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () {
+	void Update () {
 		x = Input.GetAxisRaw("Horizontal");
 		y = Input.GetAxisRaw("Vertical");
 
 		//anim.speed = x != 0 || y != 0 ? 1 : 0;
-		printTestText();
+
+		//printTestText();
+		//printText();
+
 		//if (anim.speed != 0) {
 			if (x > 0) {
 				transform.position += Vector3.right * Time.deltaTime * moveSpeed;
@@ -44,10 +54,24 @@ public class Player : MonoBehaviour {
 		//}
 	}
 
-	void printTestText() 
+	/*void printTestText() 
 	{
 		testing.text = "x: " + x.ToString() + '\n';
 		testing.text += "y: " + y.ToString() + '\n';
+	}
+
+	void printText()
+	{
+		scoreText.text = "Score: " + score.ToString();
+	}*/
+
+	void OnTriggerEnter(Collider other) 
+	{
+		if (other.gameObject.CompareTag("Pick Up"))
+		{
+			score += 10;
+			other.gameObject.SetActive(false);
+		}
 	}
 }
 
