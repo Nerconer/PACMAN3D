@@ -16,7 +16,17 @@ public class GameController : MonoBehaviour {
 	public Text levelText;
 	public Text livesText;
 
+	private bool isEating;
+
+	int elapsed_time;
+
 	float x, y;
+
+	GameObject pacman;
+	Player pacmanScript;
+	SoundController pacmanScriptMusic;
+
+	bool starting = true;
 
 	void getComponents()
 	{
@@ -24,19 +34,39 @@ public class GameController : MonoBehaviour {
 		y = GameObject.Find("Pacman").GetComponent<Player>().y;
 		score = GameObject.Find ("Pacman").GetComponent<Player>().score;
 		lives = GameObject.Find("Pacman").GetComponent<Player>().lives;
+		isEating = GameObject.Find("Pacman").GetComponent<Player>().isEating;
 	}
 
 	// Use this for initialization
 	void Start () {
 		getComponents();
 		highScore = 0;
+		elapsed_time = 0;
+		pacman = GameObject.Find("Pacman");
+		pacmanScript = pacman.GetComponent<Player>();
+		pacmanScriptMusic = pacman.GetComponent<SoundController>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		elapsed_time = (int)Time.time;
+		if(elapsed_time >= 4) {
+			pacmanScript.move = true;
+			starting = false;
+		}
 		getComponents();
 		printTestText();
-		printText ();
+		printText();
+
+		if(starting) {	
+
+		} else {	// End starting song
+			if(isEating) {
+				pacmanScriptMusic.isEating = true;	// REVISAAAAAARRRR
+			} else {
+				pacmanScriptMusic.isEating = false;
+			}
+		}
 	}
 
 	void printTestText() 
@@ -50,8 +80,8 @@ public class GameController : MonoBehaviour {
 		scoreText.text = "Score " + score.ToString();
 		levelText.text = "Level " + level.ToString();
 		livesText.text = "Lives " + lives.ToString();
-		highScoreText.text = "High Score " + highScore.ToString();
+		highScoreText.text = "High Score " + elapsed_time.ToString();
 	}
-
+		
 
 }

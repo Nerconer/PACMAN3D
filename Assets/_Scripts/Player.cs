@@ -13,6 +13,9 @@ public class Player : MonoBehaviour {
 	public int score;
 	public int lives;
 
+	public bool move;
+	public bool isEating;
+
 	//public Text testing;
 	//public Text scoreText;
 
@@ -20,6 +23,8 @@ public class Player : MonoBehaviour {
 	void Start () {
 		//anim = gameObject.GetComponent<Animator>();
 		lives = 3;
+		move = false;
+		isEating = false;
 
 		//anim.speed = 0;
 		//printTestText();
@@ -38,6 +43,7 @@ public class Player : MonoBehaviour {
 		//printText();
 
 		//if (anim.speed != 0) {
+		if(move) {
 			if (x > 0) {
 				transform.position += Vector3.right * Time.deltaTime * moveSpeed;
 				transform.localEulerAngles = new Vector3(0, 90, 0);
@@ -52,6 +58,7 @@ public class Player : MonoBehaviour {
 				transform.localEulerAngles = new Vector3(0, 180, 0);
 			}
 		//}
+		}
 	}
 
 	/*void printTestText() 
@@ -71,6 +78,17 @@ public class Player : MonoBehaviour {
 		{
 			score += 10;
 			other.gameObject.SetActive(false);
+			//SoundController sc = gameObject.GetComponent<SoundController>();
+			//sc.soundEating();
+			isEating = true;
+		}
+	}
+
+	void OnTriggerExit(Collider other) 
+	{
+		if (other.gameObject.CompareTag("Pick Up"))
+		{
+			isEating = false;
 		}
 	}
 }
