@@ -14,22 +14,17 @@ public class Player : MonoBehaviour {
 	public int lives;
 
 	public bool move;
-	public bool isEating;
 
-	//public Text testing;
-	//public Text scoreText;
+	GameObject map;
+	SoundController sc;
 
 	// Use this for initialization
 	void Start () {
 		//anim = gameObject.GetComponent<Animator>();
 		lives = 3;
 		move = false;
-		isEating = false;
-
-		//anim.speed = 0;
-		//printTestText();
-		//printText();
-
+		map = GameObject.Find("Map");
+		sc = map.GetComponent<SoundController>();
 	}
 	
 	// Update is called once per frame
@@ -38,9 +33,6 @@ public class Player : MonoBehaviour {
 		y = Input.GetAxisRaw("Vertical");
 
 		//anim.speed = x != 0 || y != 0 ? 1 : 0;
-
-		//printTestText();
-		//printText();
 
 		//if (anim.speed != 0) {
 		if(move) {
@@ -61,36 +53,17 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	/*void printTestText() 
-	{
-		testing.text = "x: " + x.ToString() + '\n';
-		testing.text += "y: " + y.ToString() + '\n';
-	}
-
-	void printText()
-	{
-		scoreText.text = "Score: " + score.ToString();
-	}*/
-
 	void OnTriggerEnter(Collider other) 
 	{
 		if (other.gameObject.CompareTag("Pick Up"))
 		{
 			score += 10;
 			other.gameObject.SetActive(false);
-			//SoundController sc = gameObject.GetComponent<SoundController>();
-			//sc.soundEating();
-			isEating = true;
-		}
-	}
 
-	void OnTriggerExit(Collider other) 
-	{
-		if (other.gameObject.CompareTag("Pick Up"))
-		{
-			isEating = false;
+			sc.soundEating();
 		}
 	}
+		
 }
 
 

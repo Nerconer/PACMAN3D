@@ -8,7 +8,6 @@ public class SoundController : MonoBehaviour {
 
 	private int elapsed_time;
 	private bool starting;
-	private bool isPlayed;
 
 	public bool isEating;
 
@@ -16,7 +15,6 @@ public class SoundController : MonoBehaviour {
 		AudioSource[] source = GetComponents<AudioSource>();
 		beginingMusic = source[0];
 		eatingMusic = source[1];
-		//isPlayed = false;
 	}
 
 	// Use this for initialization
@@ -30,25 +28,16 @@ public class SoundController : MonoBehaviour {
 		elapsed_time = (int) Time.time;
 		if(elapsed_time >= 4) {
 			starting = false;
-			if(isEating) {
-				soundEating();
-			}
-			//isPlayed = true;
 		} else {
 			if(!beginingMusic.isPlaying) {
 				beginingMusic.Play();
-				//isPlayed = true;
 			}
 		}
 	}
 
-	void soundEating(){
-		/*if(!eatingMusic.isPlaying)
-			isEating = false;
-		if(isEating) {
-		} else {
+	public void soundEating(){
+		if(!eatingMusic.isPlaying)
 			eatingMusic.Play();
-		}*/
-		eatingMusic.Play();
+
 	}
 }
