@@ -1,0 +1,11 @@
+\select@language {catalan}
+\contentsline {section}{\numberline {1}Part Comuna}{3}{section.1}
+\contentsline {subsection}{\numberline {1.1}Funcionament del joc}{3}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Objectiu del joc}{3}{subsection.1.2}
+\contentsline {section}{\numberline {2}Funcionalitats}{3}{section.2}
+\contentsline {section}{\numberline {3}Treball en Equip}{3}{section.3}
+\contentsline {subsection}{\numberline {3.1}Taula amb la divisió de tasques planificades per cada membre del grup i el seu temps estimat en hores}{3}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Diagrames de Gantt}{3}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Taula amb la divisió de les tasques realitzades per cada memebre del grup i el seu temps real en hores}{3}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Descripció de la metodologia de treball utilitzada}{3}{subsection.3.4}
+\contentsline {section}{\numberline {4}Bibliografia}{4}{section.4}
