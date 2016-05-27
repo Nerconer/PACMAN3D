@@ -125,7 +125,7 @@ public class TeleportsMap2 : MonoBehaviour {
 				break;
 			case 5:	// BACK
 				if(y >= 19 && y < 19.7 && x < -0.3 && x > -0.7) {	// UP
-					trans = new Vector3(-0.53f, 20.35f, 3.8f);
+					trans = new Vector3(-0.53f, 20.35f, 3.4f);
 					pacman.GetComponent<Player>().transform.position = trans;
 					cubeFace = 1;
 					rot = new Vector3(40.0f, 0.0f, 0.0f);
