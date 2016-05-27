@@ -12,6 +12,11 @@ public class LoadOnClick : MonoBehaviour {
 
 	public void LoadScene(int level)
 	{
+		if(level == 1) {
+			GameController.level = 1;
+		} else if(level == 2) {
+			GameController.level = 2;
+		}
 		loadingImage.SetActive(true);
 		//bool act = loadingImage.activeSelf();
 		SceneManager.LoadScene(level);

@@ -16,9 +16,9 @@ public class GameController : MonoBehaviour {
 
 	boxPosition bposL, bposR;
 
-	private int score;
-	private int highScore;
-	public int level = 1;
+	public static int score;
+	public static int highScore;
+	public static int level;
 	private int lives;
 
 	public Text testing;
@@ -33,7 +33,7 @@ public class GameController : MonoBehaviour {
 	int starting_time;
 
 	float x, y;
-	float posx, posz;
+	float posx, posy, posz;
 	bool entrat;
 
 	GameObject pacman;
@@ -43,13 +43,16 @@ public class GameController : MonoBehaviour {
 
 	bool starting;
 
+	private float distanceCameraPacman;
+
 	void getComponents()
 	{
 		x = GameObject.Find("Pacman").GetComponent<Player>().x;
 		y = GameObject.Find("Pacman").GetComponent<Player>().y;
-		score = GameObject.Find ("Pacman").GetComponent<Player>().score;
+		//score = GameObject.Find ("Pacman").GetComponent<Player>().score;
 		lives = GameObject.Find("Pacman").GetComponent<Player>().lives;
 		posx = GameObject.Find("Pacman").GetComponent<Player>().transform.position.x;
+		posy = GameObject.Find("Pacman").GetComponent<Player>().transform.position.y;
 		posz = GameObject.Find("Pacman").GetComponent<Player>().transform.position.z;
 	}
 
@@ -98,6 +101,7 @@ public class GameController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		level = 2;	// TEMPORAL
 		starting_time = (int)Time.time;
 		entrat = false;
 		starting = true;
@@ -135,8 +139,18 @@ public class GameController : MonoBehaviour {
 		testing.text = "x: " + x.ToString() + '\n';
 		testing.text += "y: " + y.ToString() + '\n';
 		testing.text += "Position X: " + posx.ToString() + '\n';
+		testing.text += "Position Y: " + posy.ToString() + '\n';
 		testing.text += "Position Z: " + posz.ToString() + '\n';
+		testing.text += "Rotation X: " + GameObject.Find("Pacman").GetComponent<Player>().transform.eulerAngles.x + '\n';
+		testing.text += "Rotation Y: " + GameObject.Find("Pacman").GetComponent<Player>().transform.eulerAngles.y + '\n';
+		testing.text += "Rotation Z: " + GameObject.Find("Pacman").GetComponent<Player>().transform.eulerAngles.z + '\n';
+		testing.text += "Camera Position X: " + GameObject.Find("Main Camera").transform.position.x + '\n';
+		testing.text += "Camera Position Y: " + GameObject.Find("Main Camera").transform.position.y + '\n';
+		testing.text += "Camera Position Z: " + GameObject.Find("Main Camera").transform.position.z + '\n';
 		testing.text += "Entrat: " + entrat.ToString() + '\n';
+		testing.text += "Distance Camera: " + distanceCameraPacman.ToString() + '\n';
+		testing.text += "Cube Face: " + TeleportsMap2.cubeFace.ToString() + '\n';
+		testing.text += "Teleport: " + TeleportsMap2.entro.ToString() + '\n';
 	}
 
 	void printText()
