@@ -18,6 +18,8 @@ public class Player : MonoBehaviour {
 	public float x;
 	public float y;
 
+	bool wakawaka;
+
 	//public int score;
 	public int lives;
 
@@ -26,6 +28,8 @@ public class Player : MonoBehaviour {
 	GameObject map;
 	SoundController sc;
 
+
+	private Animator animator;
 	// Use this for initialization
 	void Start () {
 		//anim = gameObject.GetComponent<Animator>();
@@ -33,24 +37,32 @@ public class Player : MonoBehaviour {
 		move = false;
 		map = GameObject.Find("Map");
 		sc = map.GetComponent<SoundController>();
+		animator = GetComponent<Animator>();
 		//moveSpeed = 50;
 	}
 
 	void moveLevel1() {
-
+		bool isMoving = false;
 		if(x > 0) {
+			isMoving = true;
 			transform.position += Vector3.right * Time.deltaTime * moveSpeed;
 			transform.localEulerAngles = new Vector3(0, 90, 0);
 		} else if(x < 0) {
+			isMoving = true;
 			transform.position += Vector3.left * Time.deltaTime * moveSpeed;
 			transform.localEulerAngles = new Vector3(0, 270, 0);
 		} else if(y > 0) {
+			isMoving = true;
 			transform.position += Vector3.forward * Time.deltaTime * moveSpeed;
 			transform.localEulerAngles = new Vector3(0, 0, 0);
 		} else if(y < 0) {
+			isMoving = true;
 			transform.position += Vector3.back * Time.deltaTime * moveSpeed;
 			transform.localEulerAngles = new Vector3(0, 180, 0);
 		}
+		animator.SetBool ("wakawaka", isMoving);
+
+
 	}
 
 	void moveLevel2(){
