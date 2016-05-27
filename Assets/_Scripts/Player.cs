@@ -60,6 +60,7 @@ public class Player : MonoBehaviour {
 			transform.position += Vector3.back * Time.deltaTime * moveSpeed;
 			transform.localEulerAngles = new Vector3(0, 180, 0);
 		}
+			
 		animator.SetBool ("wakawaka", isMoving);
 
 
