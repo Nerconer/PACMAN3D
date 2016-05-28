@@ -130,10 +130,6 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		//anim.speed = x != 0 || y != 0 ? 1 : 0;
-		//Debug.Log("level: " + GameController.level);
-
-		//if (anim.speed != 0) {
 		if(move) {
 			x = Input.GetAxisRaw("Horizontal");
 			y = Input.GetAxisRaw("Vertical");
@@ -143,7 +139,6 @@ public class Player : MonoBehaviour {
 			} else if(GameController.level == 2) {
 				moveLevel2();
 			}
-		//}
 		}
 	}
 

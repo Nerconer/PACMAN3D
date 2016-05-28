@@ -49,7 +49,6 @@ public class GameController : MonoBehaviour {
 	{
 		x = GameObject.Find("Pacman").GetComponent<Player>().x;
 		y = GameObject.Find("Pacman").GetComponent<Player>().y;
-		//score = GameObject.Find ("Pacman").GetComponent<Player>().score;
 		lives = GameObject.Find("Pacman").GetComponent<Player>().lives;
 		posx = GameObject.Find("Pacman").GetComponent<Player>().transform.position.x;
 		posy = GameObject.Find("Pacman").GetComponent<Player>().transform.position.y;
@@ -101,6 +100,7 @@ public class GameController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		AudioListener.pause = false;
 		level = 2;	// TEMPORAL
 		starting_time = (int)Time.time;
 		entrat = false;

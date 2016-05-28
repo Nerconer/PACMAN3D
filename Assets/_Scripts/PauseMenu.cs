@@ -33,6 +33,7 @@ public class PauseMenu : MonoBehaviour {
 
 	public void goMainMenu() {
 		Time.timeScale = 1;
+		AudioListener.pause = false;
 		SceneManager.LoadScene(0);
 	}
 
@@ -53,7 +54,9 @@ public class PauseMenu : MonoBehaviour {
 				pauseCanvas.gameObject.SetActive(true);
 				guiCanvas.gameObject.SetActive(false);
 				Time.timeScale = 0;
+				AudioListener.pause = true;
 			} else {
+				AudioListener.pause = false;
 				backToGame();
 			}
 		}
