@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class PauseMenu : MonoBehaviour {
@@ -7,6 +8,7 @@ public class PauseMenu : MonoBehaviour {
 	public Transform guiCanvas;
 	public Transform optionsCanvas;
 	public Transform confirmCanvas;
+	public Transform confirmMMCanvas;
 
 	public void quitGame() {
 		Application.Quit();
@@ -29,7 +31,19 @@ public class PauseMenu : MonoBehaviour {
 		Time.timeScale = 1;
 	}
 
-	void Start(){
+	public void goMainMenu() {
+		Time.timeScale = 1;
+		SceneManager.LoadScene(0);
+	}
+
+	public void confirmMainM() {
+		optionsCanvas.gameObject.SetActive(false);
+		confirmMMCanvas.gameObject.SetActive(true);
+	}
+
+	public void restoreOpMM() {
+		confirmMMCanvas.gameObject.SetActive(false);
+		optionsCanvas.gameObject.SetActive(true);
 	}
 
 	// Update is called once per frame
