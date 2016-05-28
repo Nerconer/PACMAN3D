@@ -101,7 +101,7 @@ public class GameController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		level = 1;	// TEMPORAL
+		level = 2;	// TEMPORAL
 		starting_time = (int)Time.time;
 		entrat = false;
 		starting = true;
