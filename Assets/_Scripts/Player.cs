@@ -18,7 +18,9 @@ public class Player : MonoBehaviour {
 	public float x;
 	public float y;
 
-	bool wakawaka;
+
+	public string name;
+	bool isDeath;
 
 	//public int score;
 	public int lives;
@@ -36,6 +38,7 @@ public class Player : MonoBehaviour {
 		lives = 3;
 		move = false;
 		map = GameObject.Find("Map");
+		isDeath = false;
 		sc = map.GetComponent<SoundController>();
 		animator = GetComponent<Animator>();
 		//moveSpeed = 50;
@@ -130,7 +133,8 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		if(move) {
+		isDeath = animator.GetBool ("isDeath");
+		if(move && !isDeath) {
 			x = Input.GetAxisRaw("Horizontal");
 			y = Input.GetAxisRaw("Vertical");
 
@@ -144,6 +148,7 @@ public class Player : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other) 
 	{
+		name = other.gameObject.tag;
 		if (other.gameObject.CompareTag("Pick Up"))
 		{
 			GameController.score += 10;
@@ -151,6 +156,17 @@ public class Player : MonoBehaviour {
 
 			sc.soundEating();
 		}
+
+		if (other.gameObject.CompareTag ("Ghost"))
+		{
+			animator.SetBool ("isDeath", true);
+			animator.SetBool ("wakawaka", false);
+		}
+
+	}
+
+	void EndAnimationDeath() {
+		animator.SetBool ("isDeath", false);
 	}
 		
 }

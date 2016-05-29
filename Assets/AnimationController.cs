@@ -13,9 +13,9 @@ public class AnimationController : StateMachineBehaviour {
 	//
 	//}
 
-	// OnStateExit is called before OnStateExit is called on any state inside this state machine
+	//OnStateExit is called before OnStateExit is called on any state inside this state machine
 	//override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-	//
+		
 	//}
 
 	// OnStateMove is called before OnStateMove is called on any state inside this state machine
@@ -34,7 +34,7 @@ public class AnimationController : StateMachineBehaviour {
 	//}
 
 	// OnStateMachineExit is called when exiting a statemachine via its Exit Node
-	//override public void OnStateMachineExit(Animator animator, int stateMachinePathHash) {
-	//
-	//}
+	override public void OnStateMachineExit(Animator animator, int stateMachinePathHash) {
+		animator.SetBool ("isDeath", false);
+	}
 }

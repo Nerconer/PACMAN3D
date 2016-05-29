@@ -17,8 +17,11 @@ public class GhostController : MonoBehaviour {
 				                   speed);
 			GetComponent<Rigidbody> ().MovePosition (position);
 		
+		} else {
+			current = (current + 1) % waypoints.Length;
+			transform.Rotate (new Vector3 (0, 90, 0));
+
 		}
-		else current = (current + 1) % waypoints.Length;
 			
 	}
 
