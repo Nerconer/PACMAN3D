@@ -29,7 +29,7 @@ public class Player : MonoBehaviour {
 
 	GameObject map;
 	SoundController sc;
-
+	GameObject Blinky;
 
 	private Animator animator;
 	// Use this for initialization
@@ -42,6 +42,8 @@ public class Player : MonoBehaviour {
 		sc = map.GetComponent<SoundController>();
 		animator = GetComponent<Animator>();
 		//moveSpeed = 50;
+		Blinky = GameObject.Find("Ghost");
+
 	}
 
 	void moveLevel1() {
@@ -162,6 +164,13 @@ public class Player : MonoBehaviour {
 			animator.SetBool ("isDeath", true);
 			animator.SetBool ("wakawaka", false);
 		}
+
+		if (other.gameObject.CompareTag ("Power Up")) 
+		{
+			other.gameObject.SetActive (false);
+			Blinky.GetComponent<GhostController> ().isRunningAway = true;
+		}
+
 
 	}
 
