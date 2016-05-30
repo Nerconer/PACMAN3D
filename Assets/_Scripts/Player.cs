@@ -168,7 +168,7 @@ public class Player : MonoBehaviour {
 		if (other.gameObject.CompareTag ("Power Up")) 
 		{
 			other.gameObject.SetActive (false);
-			Blinky.GetComponent<GhostController> ().isRunningAway = true;
+			Blinky.GetComponent<GhostController> ().setRunningAway ();
 		}
 
 

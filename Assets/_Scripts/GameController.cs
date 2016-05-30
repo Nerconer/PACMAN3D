@@ -101,7 +101,7 @@ public class GameController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		AudioListener.pause = false;
-		level = 2;	// TEMPORAL
+		level = 1;	// TEMPORAL
 		starting_time = (int)Time.time;
 		entrat = false;
 		starting = true;
