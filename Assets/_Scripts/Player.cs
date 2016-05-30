@@ -150,6 +150,7 @@ public class Player : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other) 
 	{
+
 		name = other.gameObject.tag;
 		if (other.gameObject.CompareTag("Pick Up"))
 		{
