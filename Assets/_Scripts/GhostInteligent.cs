@@ -4,15 +4,17 @@ using System.Collections;
 public class GhostInteligent : MonoBehaviour {
 
 	// Use this for initialization
+	NavMeshAgent agent;
+	GameObject Pacman;
 	void Start () {
-		GameObject castle = GameObject.Find("Pacman");
-		if (castle)
-			GetComponent<NavMeshAgent>().destination = castle.transform.position;
-		transform.Rotate (new Vector3 (0, 180, 0));
+		agent = GetComponent<NavMeshAgent> ();
+		Pacman = GameObject.Find("Pacman");
 	
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+		agent.destination = Pacman.transform.position;
 	}
 }
