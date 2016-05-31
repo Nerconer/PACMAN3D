@@ -42,7 +42,7 @@ public class Player : MonoBehaviour {
 		sc = map.GetComponent<SoundController>();
 		animator = GetComponent<Animator>();
 		//moveSpeed = 50;
-		Blinky = GameObject.Find("Ghost");
+		Blinky = GameObject.Find("Blinky");
 
 	}
 

@@ -19,10 +19,20 @@ public class GhostController : MonoBehaviour {
 
 	public bool isRunningAway = false;
 
+	private Animator scaredAnimator;
+
+	GameObject ScaredGhost;
+
+	GameObject NormalGhost;
+
+	void Start() {
+		ScaredGhost = this.transform.GetChild (1).gameObject;
+		NormalGhost = this.transform.GetChild (0).gameObject;
+		scaredAnimator = ScaredGhost.GetComponent<Animator>();
+	}
 
 
 	void FixedUpdate() {
-
 
 		Vector3 actualPosition = transform.position;
 		if (transform.position != waypoints [current].position) {
@@ -46,6 +56,9 @@ public class GhostController : MonoBehaviour {
 					current = 0;
 					isRunningAway = false;
 					isFirstPoint = true;
+					ScaredGhost.SetActive(false);
+					scaredAnimator.SetBool("isScared", false);
+					NormalGhost.SetActive(true);
 				}
 			} else {
 				current = (current + 1) % waypoints.Length;
@@ -90,7 +103,10 @@ public class GhostController : MonoBehaviour {
 	public void setRunningAway() {
 		isRunningAway = true;
 		isFirstPoint = true;
-		--current;
+		if (current >= 0) --current;
+		NormalGhost.SetActive (false);
+		ScaredGhost.SetActive (true);
+		scaredAnimator.SetBool ("isScared", true);
 		
 	}
 
