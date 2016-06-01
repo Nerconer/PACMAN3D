@@ -119,7 +119,7 @@ public class GameController : MonoBehaviour {
 	void Update () {
 		elapsed_time = (int)Time.time - starting_time;
 		if(elapsed_time >= 4) {
-			pacmanScript.move = true;
+			Player.move = true;
 			starting = false;
 			readyText.SetActive(false);
 		}

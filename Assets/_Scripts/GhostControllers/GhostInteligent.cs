@@ -52,26 +52,28 @@ public class GhostInteligent : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (pauseDelay == 0 && !isDeath) {
-			if (!isRunningAway)
-				agent.destination = Pacman.transform.position;
+		if (Player.move) {
+			if (pauseDelay == 0 && !isDeath) {
+				if (!isRunningAway)
+					agent.destination = Pacman.transform.position;
 
-			if (isRunningAway && CompareVector (transform.position, returnPosition.position) && CompareVector (agent.destination, returnPosition.position)) {
+				if (isRunningAway && CompareVector (transform.position, returnPosition.position) && CompareVector (agent.destination, returnPosition.position)) {
 
-				toNormalState ();
-			}
+					toNormalState ();
+				}
 			
-		} else {
-			--pauseDelay;
-			if (pauseDelay == 0) {
-				Time.timeScale = 1;
-				agent.Resume ();
-				if (isDeath) {
-					isDeath = false;
+			} else {
+				--pauseDelay;
+				if (pauseDelay == 0) {
+					Time.timeScale = 1;
+					agent.Resume ();
+					if (isDeath) {
+						isDeath = false;
+					}
+
 				}
 
 			}
-
 		}
 
 	}

@@ -51,42 +51,45 @@ public class GhostController : MonoBehaviour {
 
 
 	void Update() {
-		
-		if ( pauseDelay == 0 && !isDeath) {
 
-			Vector3 actualPosition = transform.position;
-			float dist = agent.remainingDistance;
-			if (dist <= 5) {
-				if (isRunningAway) {
-					current = (current - 1);
-					if (current < 0) {
-						current = 0;
-						toNormalState ();
+		if (Player.move) {
+
+			if (pauseDelay == 0 && !isDeath) {
+
+				Vector3 actualPosition = transform.position;
+				float dist = agent.remainingDistance;
+				if (dist <= 5) {
+					if (isRunningAway) {
+						current = (current - 1);
+						if (current < 0) {
+							current = 0;
+							toNormalState ();
+						}
+					} else {
+						current = (current + 1) % waypoints.Length;
+						if (current == 0)
+							++current;
+
+
 					}
-				} else {
-					current = (current + 1) % waypoints.Length;
-					if (current == 0)
-						++current;
 
-
-				}
-
-				agent.destination = waypoints [current].position;
+					agent.destination = waypoints [current].position;
 
 				
-			}
+				}
 			
-		} else {
-			--pauseDelay;
-			if (pauseDelay == 0) {
-				Time.timeScale = 1;
-				agent.Resume ();
-				if (isDeath) {
-					isDeath = false;
+			} else {
+				--pauseDelay;
+				if (pauseDelay == 0) {
+					Time.timeScale = 1;
+					agent.Resume ();
+					if (isDeath) {
+						isDeath = false;
+					}
+
 				}
 
 			}
-
 		}
 	}
 

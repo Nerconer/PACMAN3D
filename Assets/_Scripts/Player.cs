@@ -33,11 +33,10 @@ public class Player : MonoBehaviour {
 	//public int score;
 	public int lives;
 
-	public bool move;
+	public static bool move;
 
 	GameObject map;
 	SoundController sc;
-	GameObject Blinky;
 
 	bool isPowerUp = false;
 
@@ -172,6 +171,8 @@ public class Player : MonoBehaviour {
 
 
 		if ((int)Time.time >= startTime + 15 && isPowerUp) {
+
+			isPowerUp = false;
 
 			GameObject[] ghosts = GameObject.FindGameObjectsWithTag ("Ghost Intelligent");
 
