@@ -19,6 +19,11 @@ public class Player : MonoBehaviour {
 	public float y;
 
 
+	public Quaternion initialRotation;
+	public Vector3 initialPosition;
+
+	private float pauseDelay = 0;
+
 	public string name;
 	bool isDeath;
 
@@ -35,6 +40,8 @@ public class Player : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//anim = gameObject.GetComponent<Animator>();
+		initialPosition = transform.position;
+		initialRotation = transform.rotation;
 		lives = 3;
 		move = false;
 		map = GameObject.Find("Map");
@@ -42,7 +49,9 @@ public class Player : MonoBehaviour {
 		sc = map.GetComponent<SoundController>();
 		animator = GetComponent<Animator>();
 		//moveSpeed = 50;
-		Blinky = GameObject.Find("Blinky");
+		initialRotation = transform.rotation;
+
+
 
 	}
 
@@ -135,15 +144,22 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		isDeath = animator.GetBool ("isDeath");
-		if(move && !isDeath) {
-			x = Input.GetAxisRaw("Horizontal");
-			y = Input.GetAxisRaw("Vertical");
+		
+		if (move && pauseDelay == 0) {
+			print (isDeath);
+			x = Input.GetAxisRaw ("Horizontal");
+			y = Input.GetAxisRaw ("Vertical");
 
-			if(GameController.level == 1) {
-				moveLevel1();
-			} else if(GameController.level == 2) {
-				moveLevel2();
+			if (GameController.level == 1) {
+				moveLevel1 ();
+			} else if (GameController.level == 2) {
+				moveLevel2 ();
+			}
+		} else if (pauseDelay > 0) {
+			--pauseDelay;
+			if (animator.GetCurrentAnimatorStateInfo(0).IsName("death") && pauseDelay == 0) {
+				transform.position = initialPosition;
+				transform.rotation = initialRotation;
 			}
 		}
 	}
@@ -162,22 +178,81 @@ public class Player : MonoBehaviour {
 
 		if (other.gameObject.CompareTag ("Ghost"))
 		{
-			animator.SetBool ("isDeath", true);
-			animator.SetBool ("wakawaka", false);
+			GhostController ghostController = other.gameObject.GetComponent<GhostController> ();
+
+			if (!ghostController.isDeath) {
+
+				if (ghostController.getIsRunningAway ()) {
+					animator.SetBool ("wakawaka", false);
+					ghostController.isDeathTime ();
+
+				}
+				else {
+					ghostController.returnToInitialPosition ();
+					animator.SetBool ("wakawaka", false);
+					animator.SetBool ("isDeath", true);
+					initialRotation = transform.rotation;
+
+				}
+
+				pauseDelay = 200;
+			}
+		}
+
+		if (other.gameObject.CompareTag ("Ghost Intelligent")) {
+
+			GhostInteligent ghostIntelligent = other.gameObject.GetComponent<GhostInteligent> ();
+
+			if (!ghostIntelligent.isDeath) {
+
+				if (ghostIntelligent.getIsRunningAway ()) {
+					animator.SetBool ("wakawaka", false);
+					ghostIntelligent.isDeathTime ();
+
+				}
+				else {
+					ghostIntelligent.returnToInitialPosition ();
+					animator.SetBool ("wakawaka", false);
+					animator.SetBool ("isDeath", true);
+					transform.position = initialPosition;
+					initialRotation = transform.rotation;
+
+				}
+				
+				pauseDelay = 200;
+			}
+
+
 		}
 
 		if (other.gameObject.CompareTag ("Power Up")) 
 		{
 			other.gameObject.SetActive (false);
-			Blinky.GetComponent<GhostController> ().setRunningAway ();
+			GameObject[] ghosts = GameObject.FindGameObjectsWithTag("Ghost Intelligent");
+
+			for (int i = 0; i < ghosts.Length; ++i) {
+				if (ghosts [i].activeSelf)
+					ghosts [i].GetComponent<GhostInteligent> ().setIsRunningAway ();
+			}
+
+			ghosts = GameObject.FindGameObjectsWithTag ("Ghost");
+
+			for (int i = 0; i < ghosts.Length; ++i) {
+				if (ghosts [i].activeSelf)
+					ghosts [i].GetComponent<GhostController> ().setRunningAway ();
+			}
+
 		}
 
 
 	}
 
 	void EndAnimationDeath() {
+
 		animator.SetBool ("isDeath", false);
+
 	}
+		
 		
 }
 
