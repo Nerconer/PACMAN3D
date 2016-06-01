@@ -69,6 +69,9 @@ public class GhostController : MonoBehaviour {
 				}
 
 				agent.destination = waypoints [current].position;
+				if (!ScaredGhost.transform.FindChild ("Cylinder").gameObject.activeSelf) {
+					ScaredGhost.transform.FindChild ("Cylinder").gameObject.SetActive (true);
+				}
 				
 			}
 			
@@ -78,7 +81,6 @@ public class GhostController : MonoBehaviour {
 				agent.Resume ();
 				if (isDeath) {
 					isDeath = false;
-					ScaredGhost.transform.FindChild ("Cylinder").gameObject.SetActive (true);
 				}
 
 			}
