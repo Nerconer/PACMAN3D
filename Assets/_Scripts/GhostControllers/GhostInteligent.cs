@@ -52,13 +52,14 @@ public class GhostInteligent : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+
+		remainningDistance = agent.remainingDistance;
 		if (Player.move) {
-			if (pauseDelay == 0 && !isDeath) {
+			if (pauseDelay == 0) {
 				if (!isRunningAway)
 					agent.destination = Pacman.transform.position;
 
 				if (isRunningAway && CompareVector (transform.position, returnPosition.position) && CompareVector (agent.destination, returnPosition.position)) {
-
 					toNormalState ();
 				}
 			
@@ -67,10 +68,8 @@ public class GhostInteligent : MonoBehaviour {
 				if (pauseDelay == 0) {
 					Time.timeScale = 1;
 					agent.Resume ();
-					if (isDeath) {
-						isDeath = false;
-					}
-
+					agent.destination = returnPosition.position;
+					print ("play de nuevo");
 				}
 
 			}
@@ -98,7 +97,6 @@ public class GhostInteligent : MonoBehaviour {
 
 	private bool CompareVector(Vector3 a, Vector3 b) {
 		float diff = Mathf.Abs (a.sqrMagnitude - b.sqrMagnitude);
-		print (diff);
 		if (diff < 10)
 			return true;
 		return false;
@@ -125,13 +123,15 @@ public class GhostInteligent : MonoBehaviour {
 		ScaredGhost.transform.FindChild("Cylinder").gameObject.SetActive(false);
 		ScaredGhost.transform.FindChild ("Plane").gameObject.SetActive (false);
 		//Speed, angular and aceleration modifications
-		agent.speed = 80;
-		agent.angularSpeed = 360;
-		agent.acceleration = 300;
+
 		isDeath = true;
 		Time.timeScale = 0;
 		pauseDelay = 50;
 		agent.Stop ();
+		agent.speed = 60;
+		agent.angularSpeed = 360;
+		agent.acceleration = 150;
+
 		isRunningAway = true;
 
 	}
@@ -144,6 +144,8 @@ public class GhostInteligent : MonoBehaviour {
 		ScaredGhost.SetActive (false);
 
 		NormalGhost.SetActive (true);
+
+		isDeath = false;
 
 		isRunningAway = false;
 
@@ -168,6 +170,7 @@ public class GhostInteligent : MonoBehaviour {
 			Renderer renderer = ScaredGhost.transform.FindChild ("Cylinder").gameObject.GetComponent<Renderer> ();
 			if (lastColor == Color.black) {
 				lastColor = renderer.material.color;
+				ScaredGhost.transform.FindChild ("Cylinder").gameObject.GetComponent<Renderer> ().material.color = basicColor;
 			} else {
 				if (lastColor == basicColor) {
 					renderer.material.color = Color.white;

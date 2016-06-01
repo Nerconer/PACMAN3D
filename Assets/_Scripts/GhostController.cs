@@ -54,7 +54,7 @@ public class GhostController : MonoBehaviour {
 
 		if (Player.move) {
 
-			if (pauseDelay == 0 && !isDeath) {
+			if (pauseDelay == 0) {
 
 				Vector3 actualPosition = transform.position;
 				float dist = agent.remainingDistance;
@@ -63,6 +63,9 @@ public class GhostController : MonoBehaviour {
 						current = (current - 1);
 						if (current < 0) {
 							current = 0;
+							toNormalState ();
+							if (isDeath)
+								isDeath = false;
 							toNormalState ();
 						}
 					} else {
@@ -83,12 +86,7 @@ public class GhostController : MonoBehaviour {
 				if (pauseDelay == 0) {
 					Time.timeScale = 1;
 					agent.Resume ();
-					if (isDeath) {
-						isDeath = false;
-					}
-
 				}
-
 			}
 		}
 	}
@@ -97,7 +95,7 @@ public class GhostController : MonoBehaviour {
 	public void setRunningAway() {
 		isRunningAway = true;
 		isFirstPoint = true;
-		if (current >= 0) --current;
+		if (current > 0) --current;
 		agent.destination = waypoints [current].position;
 		NormalGhost.SetActive (false);
 		ScaredGhost.SetActive (true);
@@ -130,8 +128,8 @@ public class GhostController : MonoBehaviour {
 		ScaredGhost.transform.FindChild ("Plane").gameObject.SetActive (false);
 		//Speed, angular and aceleration modifications
 		agent.speed = 80;
-		agent.angularSpeed = 360;
-		agent.acceleration = 200;
+		agent.angularSpeed = 180;
+		agent.acceleration = 100;
 		isDeath = true;
 		Time.timeScale = 0;
 		pauseDelay = 50;
@@ -160,6 +158,7 @@ public class GhostController : MonoBehaviour {
 		}
 
 		timeBlink = 0;
+		isDeath = false;
 		lastColor = Color.black;
 	}
 
@@ -170,6 +169,7 @@ public class GhostController : MonoBehaviour {
 			Renderer renderer = ScaredGhost.transform.FindChild ("Cylinder").gameObject.GetComponent<Renderer> ();
 			if (lastColor == Color.black) {
 				lastColor = renderer.material.color;
+				ScaredGhost.transform.FindChild ("Cylinder").gameObject.GetComponent<Renderer> ().material.color = basicColor;
 			} else {
 				if (lastColor == basicColor) {
 					renderer.material.color = Color.white;

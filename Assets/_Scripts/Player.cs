@@ -177,14 +177,14 @@ public class Player : MonoBehaviour {
 			GameObject[] ghosts = GameObject.FindGameObjectsWithTag ("Ghost Intelligent");
 
 			for (int i = 0; i < ghosts.Length; ++i) {
-				if (ghosts [i].activeSelf)
+				if (ghosts [i].activeSelf &&  !ghosts[i].GetComponent<GhostInteligent>().isDeath)
 					ghosts [i].GetComponent<GhostInteligent> ().toNormalState ();
 			}
 
 			ghosts = GameObject.FindGameObjectsWithTag ("Ghost");
 
 			for (int i = 0; i < ghosts.Length; ++i) {
-				if (ghosts [i].activeSelf)
+				if (ghosts [i].activeSelf && !ghosts[i].GetComponent<GhostController>().isDeath )
 					ghosts [i].GetComponent<GhostController> ().toNormalState ();
 			}
 
@@ -193,14 +193,14 @@ public class Player : MonoBehaviour {
 				GameObject[] ghosts = GameObject.FindGameObjectsWithTag ("Ghost Intelligent");
 
 				for (int i = 0; i < ghosts.Length; ++i) {
-					if (ghosts [i].activeSelf)
+				if (ghosts [i].activeSelf &&  !ghosts[i].GetComponent<GhostInteligent>().isDeath)
 						ghosts [i].GetComponent<GhostInteligent> ().Blink ();
 				}
 
 				ghosts = GameObject.FindGameObjectsWithTag ("Ghost");
 
 				for (int i = 0; i < ghosts.Length; ++i) {
-					if (ghosts [i].activeSelf)
+				if (ghosts [i].activeSelf  && !ghosts[i].GetComponent<GhostController>().isDeath)
 						ghosts [i].GetComponent<GhostController> ().Blink ();
 				}
 
@@ -222,7 +222,7 @@ public class Player : MonoBehaviour {
 			sc.soundEating();
 		}
 
-		if (other.gameObject.CompareTag ("Ghost") && !isDeath)
+		else if (other.gameObject.CompareTag ("Ghost") && !isDeath)
 		{
 			GhostController ghostController = other.gameObject.GetComponent<GhostController> ();
 
@@ -247,7 +247,7 @@ public class Player : MonoBehaviour {
 			}
 		}
 
-		if (other.gameObject.CompareTag ("Ghost Intelligent") && !isDeath) {
+		else if (other.gameObject.CompareTag ("Ghost Intelligent") && !isDeath) {
 
 			GhostInteligent ghostIntelligent = other.gameObject.GetComponent<GhostInteligent> ();
 			if (!ghostIntelligent.isDeath) {
@@ -271,21 +271,21 @@ public class Player : MonoBehaviour {
 
 		}
 
-		if (other.gameObject.CompareTag ("Power Up")) 
+		else if (other.gameObject.CompareTag ("Power Up")) 
 		{
 			isPowerUp = true;
 			startTime = (int)Time.time;
 			other.gameObject.SetActive (false);
 			GameObject[] ghosts = GameObject.FindGameObjectsWithTag("Ghost Intelligent");
 
-			for (int i = 0; i < ghosts.Length; ++i) {
+			for (int i = 0; i < ghosts.Length; i++) {
 				if (ghosts [i].activeSelf)
 					ghosts [i].GetComponent<GhostInteligent> ().setIsRunningAway ();
 			}
 
 			ghosts = GameObject.FindGameObjectsWithTag ("Ghost");
 
-			for (int i = 0; i < ghosts.Length; ++i) {
+			for (int i = 0; i < ghosts.Length; i++) {
 				if (ghosts [i].activeSelf)
 					ghosts [i].GetComponent<GhostController> ().setRunningAway ();
 			}
