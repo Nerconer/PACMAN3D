@@ -25,7 +25,7 @@ public class Player : MonoBehaviour {
 	private float pauseDelay = 0;
 
 	public string name;
-	bool isDeath;
+	static bool isDeath;
 
 	//public int score;
 	public int lives;
@@ -157,10 +157,11 @@ public class Player : MonoBehaviour {
 			}
 		} else if (pauseDelay > 0) {
 			--pauseDelay;
-			if (animator.GetCurrentAnimatorStateInfo(0).IsName("death") && pauseDelay == 0) {
+			if (pauseDelay == 0) {
 				transform.position = initialPosition;
 				transform.rotation = initialRotation;
 			}
+
 		}
 	}
 
@@ -193,9 +194,9 @@ public class Player : MonoBehaviour {
 					animator.SetBool ("isDeath", true);
 					initialRotation = transform.rotation;
 
-				}
 
-				pauseDelay = 200;
+				}
+					
 			}
 		}
 
@@ -214,12 +215,11 @@ public class Player : MonoBehaviour {
 					ghostIntelligent.returnToInitialPosition ();
 					animator.SetBool ("wakawaka", false);
 					animator.SetBool ("isDeath", true);
-					transform.position = initialPosition;
+					pauseDelay = 120;
+					isDeath = true;
 					initialRotation = transform.rotation;
 
 				}
-				
-				pauseDelay = 200;
 			}
 
 

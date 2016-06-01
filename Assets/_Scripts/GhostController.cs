@@ -8,6 +8,8 @@ public class GhostController : MonoBehaviour {
 	public Vector3 initialPosition;
 	int current = 1;
 
+	int startTime;
+
 	public float pauseDelay = 0;
 
 	public bool isCollision = false;
@@ -41,7 +43,8 @@ public class GhostController : MonoBehaviour {
 
 
 	void Update() {
-		if (pauseDelay == 0 && !isDeath) {
+		
+		if ( pauseDelay == 0 && !isDeath) {
 
 			Vector3 actualPosition = transform.position;
 			float dist = agent.remainingDistance;
@@ -56,9 +59,9 @@ public class GhostController : MonoBehaviour {
 						NormalGhost.SetActive (true);
 						//Speed, angular and aceleration modifications
 						//Speed, angular and aceleration modifications
-						agent.speed = 50;
-						agent.angularSpeed = 270;
-						agent.acceleration = 150;
+						agent.speed = 60;
+						agent.angularSpeed = 360;
+						agent.acceleration = 200;
 					}
 				} else {
 					current = (current + 1) % waypoints.Length;
@@ -71,6 +74,7 @@ public class GhostController : MonoBehaviour {
 				agent.destination = waypoints [current].position;
 				if (!ScaredGhost.transform.FindChild ("Cylinder").gameObject.activeSelf) {
 					ScaredGhost.transform.FindChild ("Cylinder").gameObject.SetActive (true);
+					ScaredGhost.transform.FindChild ("Plane").gameObject.SetActive (false);
 				}
 				
 			}
@@ -78,6 +82,7 @@ public class GhostController : MonoBehaviour {
 		} else {
 			--pauseDelay;
 			if (pauseDelay == 0) {
+				Time.timeScale = 1;
 				agent.Resume ();
 				if (isDeath) {
 					isDeath = false;
@@ -107,8 +112,8 @@ public class GhostController : MonoBehaviour {
 	public void returnToInitialPosition() {
 		agent.Stop ();
 		agent.Warp (initialPosition);
-
-		pauseDelay = 200;
+		Time.timeScale = 0;
+		pauseDelay = 50;
 	}
 
 	public bool getIsRunningAway() {
@@ -118,12 +123,14 @@ public class GhostController : MonoBehaviour {
 	public void isDeathTime() {
 
 		ScaredGhost.transform.FindChild("Cylinder").gameObject.SetActive(false);
+		ScaredGhost.transform.FindChild ("Plane").gameObject.SetActive (false);
 		//Speed, angular and aceleration modifications
-		agent.speed = 50;
-		agent.angularSpeed = 270;
-		agent.acceleration = 150;
+		agent.speed = 80;
+		agent.angularSpeed = 360;
+		agent.acceleration = 200;
 		isDeath = true;
-		pauseDelay = 200;
+		Time.timeScale = 0;
+		pauseDelay = 50;
 		agent.Stop ();
 		agent.destination = waypoints[0].position;
 

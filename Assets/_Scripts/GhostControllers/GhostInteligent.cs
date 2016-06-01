@@ -57,18 +57,21 @@ public class GhostInteligent : MonoBehaviour {
 				isRunningAway = false;
 
 				//Speed, angular and aceleration modifications
-				agent.speed = 50;
-				agent.angularSpeed = 270;
-				agent.acceleration = 150;
+				agent.speed = 60;
+				agent.angularSpeed = 360;
+				agent.acceleration = 200;
+
 
 				if (!ScaredGhost.transform.FindChild ("Cylinder").gameObject.activeSelf) {
 					ScaredGhost.transform.FindChild ("Cylinder").gameObject.SetActive (true);
+					ScaredGhost.transform.FindChild ("Plane").gameObject.SetActive (true);
 				}
 			}
 			
 		} else {
 			--pauseDelay;
 			if (pauseDelay == 0) {
+				Time.timeScale = 1;
 				agent.Resume ();
 				if (isDeath) {
 					isDeath = false;
@@ -113,8 +116,8 @@ public class GhostInteligent : MonoBehaviour {
 		agent.Stop ();
 		agent.Warp (initialPosition);
 		transform.rotation = initialRotation;
-
-		pauseDelay = 200;
+		Time.timeScale = 0;
+		pauseDelay = 50;
 	}
 
 
@@ -125,12 +128,14 @@ public class GhostInteligent : MonoBehaviour {
 	public void isDeathTime() {
 		
 		ScaredGhost.transform.FindChild("Cylinder").gameObject.SetActive(false);
+		ScaredGhost.transform.FindChild ("Plane").gameObject.SetActive (false);
 		//Speed, angular and aceleration modifications
-		agent.speed = 50;
-		agent.angularSpeed = 270;
-		agent.acceleration = 150;
+		agent.speed = 80;
+		agent.angularSpeed = 360;
+		agent.acceleration = 300;
 		isDeath = true;
-		pauseDelay = 200;
+		Time.timeScale = 0;
+		pauseDelay = 50;
 		agent.Stop ();
 		isRunningAway = true;
 
