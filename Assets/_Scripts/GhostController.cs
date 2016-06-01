@@ -32,6 +32,11 @@ public class GhostController : MonoBehaviour {
 	GameObject NormalGhost;
 	NavMeshAgent agent;
 
+	Color lastColor;
+	Color basicColor;
+
+	private int timeBlink;
+
 	void Start() {
 		ScaredGhost = this.transform.GetChild (1).gameObject;
 		NormalGhost = this.transform.GetChild (0).gameObject;
@@ -39,6 +44,9 @@ public class GhostController : MonoBehaviour {
 		agent = GetComponent<NavMeshAgent> ();
 		agent.destination = waypoints [current].position;
 		initialPosition = transform.position;
+		basicColor = ScaredGhost.transform.FindChild ("Cylinder").GetComponent<Renderer> ().material.color;
+		lastColor = Color.black;
+		timeBlink = 0;
 	}
 
 
@@ -53,15 +61,7 @@ public class GhostController : MonoBehaviour {
 					current = (current - 1);
 					if (current < 0) {
 						current = 0;
-						isRunningAway = false;
-						scaredAnimator.SetBool ("isScared", false);
-						ScaredGhost.SetActive (false);
-						NormalGhost.SetActive (true);
-						//Speed, angular and aceleration modifications
-						//Speed, angular and aceleration modifications
-						agent.speed = 60;
-						agent.angularSpeed = 360;
-						agent.acceleration = 200;
+						toNormalState ();
 					}
 				} else {
 					current = (current + 1) % waypoints.Length;
@@ -72,10 +72,7 @@ public class GhostController : MonoBehaviour {
 				}
 
 				agent.destination = waypoints [current].position;
-				if (!ScaredGhost.transform.FindChild ("Cylinder").gameObject.activeSelf) {
-					ScaredGhost.transform.FindChild ("Cylinder").gameObject.SetActive (true);
-					ScaredGhost.transform.FindChild ("Plane").gameObject.SetActive (false);
-				}
+
 				
 			}
 			
@@ -109,6 +106,8 @@ public class GhostController : MonoBehaviour {
 		
 	}
 
+
+	//Pacman death
 	public void returnToInitialPosition() {
 		agent.Stop ();
 		agent.Warp (initialPosition);
@@ -120,6 +119,8 @@ public class GhostController : MonoBehaviour {
 		return isRunningAway;
 	}
 
+
+	//Eyes ony mode
 	public void isDeathTime() {
 
 		ScaredGhost.transform.FindChild("Cylinder").gameObject.SetActive(false);
@@ -136,4 +137,49 @@ public class GhostController : MonoBehaviour {
 
 	}
 
+
+	public void toNormalState() {
+
+		ScaredGhost.transform.FindChild ("Cylinder").gameObject.GetComponent<Renderer> ().material.color = basicColor;
+		isRunningAway = false;
+		scaredAnimator.SetBool ("isScared", false);
+		ScaredGhost.SetActive (false);
+		NormalGhost.SetActive (true);
+		//Speed, angular and aceleration modifications
+		//Speed, angular and aceleration modifications
+		agent.speed = 60;
+		agent.angularSpeed = 360;
+		agent.acceleration = 200;
+
+		if (!ScaredGhost.transform.FindChild ("Cylinder").gameObject.activeSelf) {
+			ScaredGhost.transform.FindChild ("Cylinder").gameObject.SetActive (true);
+			ScaredGhost.transform.FindChild ("Plane").gameObject.SetActive (false);
+		}
+
+		timeBlink = 0;
+		lastColor = Color.black;
+	}
+
+
+
+	public void Blink() {
+		if (timeBlink == 0) {
+			Renderer renderer = ScaredGhost.transform.FindChild ("Cylinder").gameObject.GetComponent<Renderer> ();
+			if (lastColor == Color.black) {
+				lastColor = renderer.material.color;
+			} else {
+				if (lastColor == basicColor) {
+					renderer.material.color = Color.white;
+				} else {
+					renderer.material.color = basicColor;
+				}
+				lastColor = renderer.material.color;
+			}
+			timeBlink = 20;
+		} else
+			--timeBlink;
+		
+
+
+	}
 }

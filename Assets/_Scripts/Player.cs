@@ -22,6 +22,9 @@ public class Player : MonoBehaviour {
 	public Quaternion initialRotation;
 	public Vector3 initialPosition;
 
+
+	int startTime;
+
 	private float pauseDelay = 0;
 
 	public string name;
@@ -35,6 +38,8 @@ public class Player : MonoBehaviour {
 	GameObject map;
 	SoundController sc;
 	GameObject Blinky;
+
+	bool isPowerUp = false;
 
 	private Animator animator;
 	// Use this for initialization
@@ -51,6 +56,7 @@ public class Player : MonoBehaviour {
 		//moveSpeed = 50;
 		initialRotation = transform.rotation;
 
+		startTime =0;
 
 
 	}
@@ -146,7 +152,6 @@ public class Player : MonoBehaviour {
 	void FixedUpdate () {
 		
 		if (move && pauseDelay == 0) {
-			print (isDeath);
 			x = Input.GetAxisRaw ("Horizontal");
 			y = Input.GetAxisRaw ("Vertical");
 
@@ -158,11 +163,50 @@ public class Player : MonoBehaviour {
 		} else if (pauseDelay > 0) {
 			--pauseDelay;
 			if (pauseDelay == 0) {
+				isDeath = false;
 				transform.position = initialPosition;
 				transform.rotation = initialRotation;
 			}
 
 		}
+
+
+		if ((int)Time.time >= startTime + 15 && isPowerUp) {
+
+			GameObject[] ghosts = GameObject.FindGameObjectsWithTag ("Ghost Intelligent");
+
+			for (int i = 0; i < ghosts.Length; ++i) {
+				if (ghosts [i].activeSelf)
+					ghosts [i].GetComponent<GhostInteligent> ().toNormalState ();
+			}
+
+			ghosts = GameObject.FindGameObjectsWithTag ("Ghost");
+
+			for (int i = 0; i < ghosts.Length; ++i) {
+				if (ghosts [i].activeSelf)
+					ghosts [i].GetComponent<GhostController> ().toNormalState ();
+			}
+
+
+		} else if (isPowerUp && (int)Time.time >= startTime + 10) {
+				GameObject[] ghosts = GameObject.FindGameObjectsWithTag ("Ghost Intelligent");
+
+				for (int i = 0; i < ghosts.Length; ++i) {
+					if (ghosts [i].activeSelf)
+						ghosts [i].GetComponent<GhostInteligent> ().Blink ();
+				}
+
+				ghosts = GameObject.FindGameObjectsWithTag ("Ghost");
+
+				for (int i = 0; i < ghosts.Length; ++i) {
+					if (ghosts [i].activeSelf)
+						ghosts [i].GetComponent<GhostController> ().Blink ();
+				}
+
+		}
+
+
+
 	}
 
 	void OnTriggerEnter(Collider other) 
@@ -177,7 +221,7 @@ public class Player : MonoBehaviour {
 			sc.soundEating();
 		}
 
-		if (other.gameObject.CompareTag ("Ghost"))
+		if (other.gameObject.CompareTag ("Ghost") && !isDeath)
 		{
 			GhostController ghostController = other.gameObject.GetComponent<GhostController> ();
 
@@ -189,9 +233,11 @@ public class Player : MonoBehaviour {
 
 				}
 				else {
-					ghostController.returnToInitialPosition ();
 					animator.SetBool ("wakawaka", false);
+					ghostController.returnToInitialPosition ();
 					animator.SetBool ("isDeath", true);
+					pauseDelay = 150;
+					isDeath = true;
 					initialRotation = transform.rotation;
 
 
@@ -200,10 +246,9 @@ public class Player : MonoBehaviour {
 			}
 		}
 
-		if (other.gameObject.CompareTag ("Ghost Intelligent")) {
+		if (other.gameObject.CompareTag ("Ghost Intelligent") && !isDeath) {
 
 			GhostInteligent ghostIntelligent = other.gameObject.GetComponent<GhostInteligent> ();
-
 			if (!ghostIntelligent.isDeath) {
 
 				if (ghostIntelligent.getIsRunningAway ()) {
@@ -212,10 +257,10 @@ public class Player : MonoBehaviour {
 
 				}
 				else {
-					ghostIntelligent.returnToInitialPosition ();
 					animator.SetBool ("wakawaka", false);
+					ghostIntelligent.returnToInitialPosition ();
 					animator.SetBool ("isDeath", true);
-					pauseDelay = 120;
+					pauseDelay = 150;
 					isDeath = true;
 					initialRotation = transform.rotation;
 
@@ -227,6 +272,8 @@ public class Player : MonoBehaviour {
 
 		if (other.gameObject.CompareTag ("Power Up")) 
 		{
+			isPowerUp = true;
+			startTime = (int)Time.time;
 			other.gameObject.SetActive (false);
 			GameObject[] ghosts = GameObject.FindGameObjectsWithTag("Ghost Intelligent");
 

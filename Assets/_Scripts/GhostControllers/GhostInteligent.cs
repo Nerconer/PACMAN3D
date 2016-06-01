@@ -14,6 +14,8 @@ public class GhostInteligent : MonoBehaviour {
 	GameObject ScaredGhost;
 	GameObject NormalGhost;
 
+	private int timeBlink = 0;
+
 	public bool isDeath = false;
 
 	private Animator scaredAnimator;
@@ -25,6 +27,9 @@ public class GhostInteligent : MonoBehaviour {
 
 	public float pauseDelay = 0;
 
+	Color lastColor;
+	Color basicColor;
+
 
 	GameObject Pacman;
 	void Start () {
@@ -33,10 +38,14 @@ public class GhostInteligent : MonoBehaviour {
 		scaredAnimator = ScaredGhost.GetComponent<Animator>();
 		agent = GetComponent<NavMeshAgent> ();
 		Pacman = GameObject.Find("Pacman");
+		pauseDelay = 0;
 		isRunningAway = false;
 		isScaredActive = false;
 		initialPosition = transform.position;
 		initialRotation = transform.rotation;
+		basicColor = ScaredGhost.transform.FindChild ("Cylinder").GetComponent<Renderer> ().material.color;
+		lastColor = Color.black;
+		timeBlink = 0;
 	
 	}
 	
@@ -49,23 +58,7 @@ public class GhostInteligent : MonoBehaviour {
 
 			if (isRunningAway && CompareVector (transform.position, returnPosition.position) && CompareVector (agent.destination, returnPosition.position)) {
 
-				scaredAnimator.SetBool ("isScared", false);
-				ScaredGhost.SetActive (false);
-
-				NormalGhost.SetActive (true);
-
-				isRunningAway = false;
-
-				//Speed, angular and aceleration modifications
-				agent.speed = 60;
-				agent.angularSpeed = 360;
-				agent.acceleration = 200;
-
-
-				if (!ScaredGhost.transform.FindChild ("Cylinder").gameObject.activeSelf) {
-					ScaredGhost.transform.FindChild ("Cylinder").gameObject.SetActive (true);
-					ScaredGhost.transform.FindChild ("Plane").gameObject.SetActive (true);
-				}
+				toNormalState ();
 			}
 			
 		} else {
@@ -138,6 +131,52 @@ public class GhostInteligent : MonoBehaviour {
 		pauseDelay = 50;
 		agent.Stop ();
 		isRunningAway = true;
+
+	}
+
+	public void toNormalState() {
+
+		scaredAnimator.SetBool ("isScared", false);
+		ScaredGhost.transform.FindChild ("Cylinder").gameObject.GetComponent<Renderer> ().material.color = basicColor;
+
+		ScaredGhost.SetActive (false);
+
+		NormalGhost.SetActive (true);
+
+		isRunningAway = false;
+
+		//Speed, angular and aceleration modifications
+		agent.speed = 60;
+		agent.angularSpeed = 360;
+		agent.acceleration = 200;
+
+
+		if (!ScaredGhost.transform.FindChild ("Cylinder").gameObject.activeSelf) {
+			ScaredGhost.transform.FindChild ("Cylinder").gameObject.SetActive (true);
+			ScaredGhost.transform.FindChild ("Plane").gameObject.SetActive (true);
+		}
+
+		timeBlink = 0;
+		lastColor = Color.black;
+	}
+
+
+	public void Blink() {
+		if (timeBlink == 0) {
+			Renderer renderer = ScaredGhost.transform.FindChild ("Cylinder").gameObject.GetComponent<Renderer> ();
+			if (lastColor == Color.black) {
+				lastColor = renderer.material.color;
+			} else {
+				if (lastColor == basicColor) {
+					renderer.material.color = Color.white;
+				} else {
+					renderer.material.color = basicColor;
+				}
+				lastColor = renderer.material.color;
+			}
+			timeBlink = 20;
+		} else
+			--timeBlink;
 
 	}
 }

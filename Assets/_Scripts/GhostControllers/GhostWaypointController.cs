@@ -18,7 +18,14 @@ public class GhostWaypointController : MonoBehaviour {
 			GetComponent<Rigidbody> ().MovePosition (position);
 
 		}
-		else current = (current + 1) % waypoints.Length;
+		else {
+
+
+
+			current = (current + 1) % waypoints.Length;
+
+			//setDirection();
+		}
 
 	}
 
