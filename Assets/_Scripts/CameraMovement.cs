@@ -18,6 +18,7 @@ public class CameraMovement : MonoBehaviour {
 			GameObject camera = GameObject.Find("MainCamera");
 			camera.transform.position = new Vector3(-0.45f, 24.0f, -7.0f);
 			camera.transform.eulerAngles = new Vector3(40.0f, 0.0f, 0.0f);
+			TeleportsMap2.cubeFace = 1;
 		}
 		else transform.position = pacman.transform.position + offset;
 	}

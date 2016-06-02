@@ -251,6 +251,7 @@ public class Player : MonoBehaviour {
 						camera.transform.position = new Vector3(-0.45f, 24.0f, -7.0f);
 						camera.transform.eulerAngles = new Vector3(40.0f, 0.0f, 0.0f);
 						Debug.Log(camera.transform.position);
+						TeleportsMap2.cubeFace = 1;
 					}
 					transform.position = initialPosition;
 					transform.rotation = initialRotation;
