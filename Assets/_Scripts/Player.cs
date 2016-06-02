@@ -219,7 +219,8 @@ public class Player : MonoBehaviour {
 			GameController.score += 10;
 			other.gameObject.SetActive(false);
 
-			sc.soundEating();
+			//sc.soundEating();
+			sc.playMusic(1);
 		}
 
 		else if (other.gameObject.CompareTag ("Ghost") && !isDeath)
@@ -239,6 +240,7 @@ public class Player : MonoBehaviour {
 					animator.SetBool ("isDeath", true);
 					pauseDelay = 150;
 					isDeath = true;
+					sc.playMusic(2);
 					initialRotation = transform.rotation;
 
 
@@ -263,6 +265,7 @@ public class Player : MonoBehaviour {
 					animator.SetBool ("isDeath", true);
 					pauseDelay = 150;
 					isDeath = true;
+					sc.playMusic(2);
 					initialRotation = transform.rotation;
 
 				}
@@ -273,6 +276,7 @@ public class Player : MonoBehaviour {
 
 		else if (other.gameObject.CompareTag ("Power Up")) 
 		{
+			sc.playMusic(4);
 			isPowerUp = true;
 			startTime = (int)Time.time;
 			other.gameObject.SetActive (false);
@@ -295,8 +299,8 @@ public class Player : MonoBehaviour {
 
 	}
 
-	void EndAnimationDeath() {
-
+	void EndAnimationDeath() 
+	{
 		animator.SetBool ("isDeath", false);
 
 	}

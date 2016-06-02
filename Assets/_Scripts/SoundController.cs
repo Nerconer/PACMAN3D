@@ -5,6 +5,9 @@ public class SoundController : MonoBehaviour {
 
 	public AudioSource beginingMusic;
 	public AudioSource eatingMusic;
+	public AudioSource deadMusic;
+	public AudioSource intermissionMusic;
+	public AudioSource powerUpMusic;
 
 	private int elapsed_time;
 	private int starting_time;
@@ -12,10 +15,15 @@ public class SoundController : MonoBehaviour {
 
 	public bool isEating;
 
+	public static AudioSource[] source;
+
 	void Awake() {
-		AudioSource[] source = GetComponents<AudioSource>();
+		source = GetComponents<AudioSource>();
 		beginingMusic = source[0];
 		eatingMusic = source[1];
+		deadMusic = source[2];
+		intermissionMusic = source[3];
+		powerUpMusic = source[4];
 	}
 
 	// Use this for initialization
@@ -38,9 +46,17 @@ public class SoundController : MonoBehaviour {
 		}
 	}
 
-	public void soundEating(){
-		if(!eatingMusic.isPlaying)
-			eatingMusic.Play();
 
+	public void playMusic(int id) {
+		if(!source[id].isPlaying) {
+			if(id == 2) {	// dead sound
+				source[id].PlayDelayed(1);
+			} else if(id == 4) {
+				source[id].Play();
+				source[3].PlayDelayed(0.8f);
+			} else {
+				source[id].Play();
+			}
+		}
 	}
 }

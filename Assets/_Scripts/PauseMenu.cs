@@ -34,6 +34,9 @@ public class PauseMenu : MonoBehaviour {
 	public void goMainMenu() {
 		Time.timeScale = 1;
 		AudioListener.pause = false;
+		for (int i = 0; i < SoundController.source.Length; ++i) {
+			SoundController.source[i].Stop();
+		}
 		SceneManager.LoadScene(0);
 	}
 
