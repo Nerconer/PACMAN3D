@@ -66,13 +66,7 @@ public class GhostInteligentLevel2 : MonoBehaviour {
 				if (!isRunningAway)
 					agent.destination = Pacman.transform.position;
 
-				if (isRunningAway) {
-					Vector3 direction = (Pacman.transform.position - transform.position).normalized;
-					float fleeingDistance = 100; //run away for 100 units
-					agent.destination = transform.position + direction * fleeingDistance;
-				}
-					
-				if (isRunningAway && CompareVector (transform.position, returnPosition.position) && CompareVector (agent.destination, returnPosition.position)) {
+				if (isRunningAway && CompareVector(agent.destination, returnPosition.position) && CompareVector(transform.position, returnPosition.position) ) {
 					toNormalState ();
 				}
 
@@ -94,13 +88,12 @@ public class GhostInteligentLevel2 : MonoBehaviour {
 
 	public void setIsRunningAway() 
 	{
-
+		agent.destination = returnPosition.position;
 		isRunningAway = true;
 		isScaredActive = true;
 		NormalGhost.SetActive (false);
 		ScaredGhost.SetActive (true);
 		scaredAnimator.SetBool ("isScared", true);
-		agent.destination = returnPosition.position;
 		//Speed, angular and aceleration modifications
 		agent.speed = 1;
 		agent.angularSpeed = 120;
@@ -110,7 +103,8 @@ public class GhostInteligentLevel2 : MonoBehaviour {
 
 	private bool CompareVector(Vector3 a, Vector3 b) {
 		float diff = Mathf.Abs (a.sqrMagnitude - b.sqrMagnitude);
-		if (diff < 10)
+		print (diff);
+		if (diff < 15)
 			return true;
 		return false;
 
