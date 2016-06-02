@@ -236,8 +236,8 @@ public class GhostWaypointController : MonoBehaviour {
 		ScaredGhost.transform.FindChild("Cylinder").gameObject.SetActive(false);
 		ScaredGhost.transform.FindChild ("Plane").gameObject.SetActive (false);
 		isDeath = true;
-		Time.timeScale = 0;
-		pauseDelay = 10;
+		StartCoroutine (ResumeAfterSeconds (1));
+
 
 
 	}
@@ -284,5 +284,22 @@ public class GhostWaypointController : MonoBehaviour {
 
 
 
+	}
+
+	private IEnumerator ResumeAfterSeconds(int resumetime) // 3
+	{
+		Time.timeScale = 0.0001f;
+		float pauseEndTime = Time.realtimeSinceStartup + resumetime; // 10 + 4 = 13
+
+		float number3 = Time.realtimeSinceStartup + 1; // 10 + 1 = 11
+		float number2 = Time.realtimeSinceStartup + 2; // 10 + 2 = 12
+		float number1 = Time.realtimeSinceStartup + 3; // 10 + 3 = 13
+
+		while (Time.realtimeSinceStartup < pauseEndTime) // 10 < 13
+		{
+			yield return null;
+		}
+
+		Time.timeScale = 1;
 	}
 }
