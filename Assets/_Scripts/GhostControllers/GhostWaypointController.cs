@@ -6,7 +6,7 @@ public class GhostWaypointController : MonoBehaviour {
 	public Transform[] waypoints;
 
 	public Vector3 initialPosition;
-	int current = 1;
+	public int current = 1;
 
 	int startTime;
 
@@ -62,8 +62,32 @@ public class GhostWaypointController : MonoBehaviour {
 		ny = nextV.y;
 		nz = nextV.z;
 
+		if(transform.name == "ghost10" || transform.name == "ghost11") {
+			if((current - 1) == -1 && transform.name == "ghost10") {
+				currentV = waypoints[14].position;
+			} else if((current - 1) == -1 && transform.name == "ghost11") {
+				currentV = waypoints[11].position;
+			} else {
+				currentV = waypoints[current - 1].position;
+			}
 
-		if(transform.name == "ghost20" || transform.name == "ghost21") {
+			cx = currentV.x;
+			cz = currentV.z;
+
+			if(nz > cz) {
+				rotation = new Vector3(0.0f, 180.0f, 0.0f);
+				transform.eulerAngles = rotation;
+			} else if(nz < cz) {
+				rotation = new Vector3(0.0f, 0.0f, 0.0f);
+				transform.eulerAngles = rotation;
+			} else if(nx > cx) {
+				rotation = new Vector3(0.0f, -90.0f, 0.0f);
+				transform.eulerAngles = rotation;
+			} else if(nx < cx) {
+				rotation = new Vector3(0.0f, 90.0f, 0.0f);
+				transform.eulerAngles = rotation;
+			}
+		}else if(transform.name == "ghost20" || transform.name == "ghost21") {
 			if((current - 1) == -1 && transform.name == "ghost20") {
 				currentV = waypoints[13].position;
 			} else if((current - 1) == -1 && transform.name == "ghost21") {
@@ -212,6 +236,7 @@ public class GhostWaypointController : MonoBehaviour {
 	public void returnToInitialPosition() {
 		transform.position = initialPosition;
 		transform.rotation = initialRotation;
+		current = 1;
 	}
 
 	public bool getIsRunningAway() {
