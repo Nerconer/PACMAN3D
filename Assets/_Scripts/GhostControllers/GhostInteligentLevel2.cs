@@ -114,6 +114,7 @@ public class GhostInteligentLevel2 : MonoBehaviour {
 	public void returnToInitialPosition() {
 		agent.Warp (initialPosition);
 		transform.rotation = initialRotation;
+		pauseDelay = 200;
 	}
 
 
