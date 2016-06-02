@@ -28,6 +28,8 @@ public class Player : MonoBehaviour {
 	public Quaternion initialRotation;
 	public Vector3 initialPosition;
 
+	public static bool deadmap2;
+
 
 	int startTime;
 
@@ -55,6 +57,7 @@ public class Player : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		deadmap2 = false;
 		//anim = gameObject.GetComponent<Animator>();
 		initialPosition = transform.position;
 		initialRotation = transform.rotation;
@@ -217,8 +220,15 @@ public class Player : MonoBehaviour {
 				if (pauseDelay == 0) {
 					//isDeath = false;
 					isDeath = false;
+					if(GameController.level == 2)
+						deadmap2 = true;
 					transform.position = initialPosition;
 					transform.rotation = initialRotation;
+
+					GameObject camera = GameObject.Find("MainCamera");
+					camera.transform.position = new Vector3(-0.45f, 24.0f, -7.0f);
+					camera.transform.eulerAngles = new Vector3(40.0f, 0.0f, 0.0f);
+					Debug.Log(camera.transform.position);
 				}
 			}
 
@@ -310,6 +320,9 @@ public class Player : MonoBehaviour {
 			Debug.Log("Pills num: " + pills_num);
 			if(GameController.level == 1 && pills_num == 272)
 				win = true;
+			if(GameController.level == 2 && pills_num == 340)
+				win = true;
+			
 		}
 
 		else if (other.gameObject.CompareTag ("Ghost") && !isDeath)
@@ -345,7 +358,6 @@ public class Player : MonoBehaviour {
 					sc.playMusic(2);
 					initialRotation = transform.rotation;
 					lives--;
-					Debug.Log("Lives "+lives);
 					if(lives == 0)
 						gameover = true;
 
@@ -389,7 +401,6 @@ public class Player : MonoBehaviour {
 					initialRotation = transform.rotation; 
 					sc.playMusic(2);
 					lives--;
-					Debug.Log("Lives "+lives);
 					if(lives == 0)
 						gameover = true;
 
@@ -471,6 +482,9 @@ public class Player : MonoBehaviour {
 					pauseDelay = 120;
 					initialRotation = transform.rotation; 
 					sc.playMusic(2);
+					lives--;
+					if(lives == 0)
+						gameover = true;
 
 				}
 			}
@@ -502,8 +516,10 @@ public class Player : MonoBehaviour {
 					StartCoroutine(ResumeAfterSeconds(1));
 					pauseDelay = 120;
 					sc.playMusic(2);
+					lives--;
+					if(lives == 0)
+						gameover = true;
 					initialRotation = transform.rotation;
-
 
 				}
 
