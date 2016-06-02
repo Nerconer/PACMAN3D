@@ -150,7 +150,6 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 
-		isDeath = animator.GetBool ("isDeath");
 
 		if (move && pauseDelay == 0) {
 			x = Input.GetAxisRaw ("Horizontal");
@@ -165,6 +164,7 @@ public class Player : MonoBehaviour {
 			--pauseDelay;
 			if (pauseDelay == 0) {
 				//isDeath = false;
+				isDeath = false;
 				transform.position = initialPosition;
 				transform.rotation = initialRotation;
 			}
@@ -190,6 +190,13 @@ public class Player : MonoBehaviour {
 					ghosts [i].GetComponent<GhostController> ().toNormalState ();
 			}
 
+			ghosts = GameObject.FindGameObjectsWithTag ("Ghost Intelligent2");
+
+			for (int i = 0; i < ghosts.Length; ++i) {
+				if (ghosts [i].activeSelf && !ghosts[i].GetComponent<GhostInteligentLevel2>().isDeath )
+					ghosts [i].GetComponent<GhostInteligentLevel2> ().toNormalState ();
+			}
+
 
 		} else if (isPowerUp && (int)Time.time >= startTime + 10) {
 				GameObject[] ghosts = GameObject.FindGameObjectsWithTag ("Ghost Intelligent");
@@ -204,6 +211,13 @@ public class Player : MonoBehaviour {
 				for (int i = 0; i < ghosts.Length; ++i) {
 				if (ghosts [i].activeSelf  && !ghosts[i].GetComponent<GhostController>().isDeath)
 						ghosts [i].GetComponent<GhostController> ().Blink ();
+				}
+
+				ghosts = GameObject.FindGameObjectsWithTag ("Ghost Intelligent2");
+
+				for (int i = 0; i < ghosts.Length; ++i) {
+					if (ghosts [i].activeSelf && !ghosts[i].GetComponent<GhostInteligentLevel2>().isDeath )
+						ghosts [i].GetComponent<GhostInteligentLevel2> ().Blink ();
 				}
 
 		}
@@ -265,6 +279,7 @@ public class Player : MonoBehaviour {
 		}
 
 		else if (other.gameObject.CompareTag ("Ghost Intelligent") && !isDeath) {
+			
 
 			GhostInteligent ghostIntelligent = other.gameObject.GetComponent<GhostInteligent> ();
 			if (!ghostIntelligent.isDeath) {
@@ -322,6 +337,45 @@ public class Player : MonoBehaviour {
 				if (ghosts[i].activeSelf)
 					ghosts[i].GetComponent<GhostController>().setRunningAway();
 			}
+
+
+			ghosts = GameObject.FindGameObjectsWithTag ("Ghost Intelligent2");
+
+			for (int i = 0; i < ghosts.Length; i++) {
+				if (ghosts[i].activeSelf)
+					ghosts[i].GetComponent<GhostInteligentLevel2>().setIsRunningAway();
+			}
+
+		}
+		else if (other.gameObject.CompareTag ("Ghost Intelligent2") && !isDeath) {
+
+			GhostInteligentLevel2 ghostIntelligent = other.gameObject.GetComponent<GhostInteligentLevel2> ();
+			if (!ghostIntelligent.isDeath) {
+
+				if (ghostIntelligent.getIsRunningAway ()) {
+					animator.SetBool ("wakawaka", false);
+					ghostIntelligent.isDeathTime ();
+					sc.playMusic(5);
+				}
+				else {
+					animator.SetBool ("wakawaka", false);
+					GameObject[] ghosts = GameObject.FindGameObjectsWithTag("Ghost Intelligent2");
+
+					for (int i = 0; i < ghosts.Length; i++) {
+						if (ghosts [i].activeSelf)
+							ghosts [i].GetComponent<GhostInteligentLevel2> ().returnToInitialPosition ();
+					}
+						
+					animator.SetBool ("isDeath", true);
+					isDeath = true;
+					StartCoroutine(ResumeAfterSeconds(1));
+					pauseDelay = 120;
+					initialRotation = transform.rotation; 
+					sc.playMusic(2);
+
+				}
+			}
+
 
 		}
 
