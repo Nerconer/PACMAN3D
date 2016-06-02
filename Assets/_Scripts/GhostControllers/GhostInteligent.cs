@@ -110,7 +110,7 @@ public class GhostInteligent : MonoBehaviour {
 		agent.Warp (initialPosition);
 		transform.rotation = initialRotation;
 		Time.timeScale = 0;
-		pauseDelay = 50;
+		pauseDelay = 10;	// 50 before
 	}
 
 
@@ -126,7 +126,7 @@ public class GhostInteligent : MonoBehaviour {
 
 		isDeath = true;
 		Time.timeScale = 0;
-		pauseDelay = 50;
+		pauseDelay = 10;
 		agent.Stop ();
 		agent.speed = 60;
 		agent.angularSpeed = 360;

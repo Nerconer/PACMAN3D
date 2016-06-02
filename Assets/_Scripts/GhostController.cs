@@ -113,7 +113,7 @@ public class GhostController : MonoBehaviour {
 		agent.Stop ();
 		agent.Warp (initialPosition);
 		Time.timeScale = 0;
-		pauseDelay = 50;
+		pauseDelay = 10;	
 	}
 
 	public bool getIsRunningAway() {
@@ -132,7 +132,7 @@ public class GhostController : MonoBehaviour {
 		agent.acceleration = 100;
 		isDeath = true;
 		Time.timeScale = 0;
-		pauseDelay = 50;
+		pauseDelay = 10;
 		agent.Stop ();
 		agent.destination = waypoints[0].position;
 

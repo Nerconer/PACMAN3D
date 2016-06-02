@@ -232,7 +232,7 @@ public class Player : MonoBehaviour {
 				if (ghostController.getIsRunningAway ()) {
 					animator.SetBool ("wakawaka", false);
 					ghostController.isDeathTime ();
-
+					sc.playMusic(5);
 				}
 				else {
 					animator.SetBool ("wakawaka", false);
@@ -257,7 +257,7 @@ public class Player : MonoBehaviour {
 				if (ghostIntelligent.getIsRunningAway ()) {
 					animator.SetBool ("wakawaka", false);
 					ghostIntelligent.isDeathTime ();
-
+					sc.playMusic(5);
 				}
 				else {
 					animator.SetBool ("wakawaka", false);
@@ -283,15 +283,15 @@ public class Player : MonoBehaviour {
 			GameObject[] ghosts = GameObject.FindGameObjectsWithTag("Ghost Intelligent");
 
 			for (int i = 0; i < ghosts.Length; i++) {
-				if (ghosts [i].activeSelf)
-					ghosts [i].GetComponent<GhostInteligent> ().setIsRunningAway ();
+				if (ghosts[i].activeSelf)
+					ghosts[i].GetComponent<GhostInteligent>().setIsRunningAway();
 			}
 
 			ghosts = GameObject.FindGameObjectsWithTag ("Ghost");
 
 			for (int i = 0; i < ghosts.Length; i++) {
-				if (ghosts [i].activeSelf)
-					ghosts [i].GetComponent<GhostController> ().setRunningAway ();
+				if (ghosts[i].activeSelf)
+					ghosts[i].GetComponent<GhostController>().setRunningAway();
 			}
 
 		}
