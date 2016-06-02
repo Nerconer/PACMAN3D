@@ -108,9 +108,9 @@ public class GameController : MonoBehaviour {
 		testing.text += "Rotation X: " + GameObject.Find("Pacman").GetComponent<Player>().transform.eulerAngles.x + '\n';
 		testing.text += "Rotation Y: " + GameObject.Find("Pacman").GetComponent<Player>().transform.eulerAngles.y + '\n';
 		testing.text += "Rotation Z: " + GameObject.Find("Pacman").GetComponent<Player>().transform.eulerAngles.z + '\n';
-		testing.text += "Camera Position X: " + GameObject.Find("Main Camera").transform.position.x + '\n';
-		testing.text += "Camera Position Y: " + GameObject.Find("Main Camera").transform.position.y + '\n';
-		testing.text += "Camera Position Z: " + GameObject.Find("Main Camera").transform.position.z + '\n';
+		//testing.text += "Camera Position X: " + GameObject.Find("Main Camera").transform.position.x + '\n';
+		//testing.text += "Camera Position Y: " + GameObject.Find("Main Camera").transform.position.y + '\n';
+		//testing.text += "Camera Position Z: " + GameObject.Find("Main Camera").transform.position.z + '\n';
 		testing.text += "Entrat: " + entrat.ToString() + '\n';
 		testing.text += "Distance Camera: " + distanceCameraPacman.ToString() + '\n';
 		testing.text += "Cube Face: " + TeleportsMap2.cubeFace.ToString() + '\n';
