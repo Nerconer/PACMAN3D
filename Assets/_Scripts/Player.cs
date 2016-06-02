@@ -30,6 +30,7 @@ public class Player : MonoBehaviour {
 
 	public static bool deadmap2;
 
+	int lastCubeFace;
 
 	int startTime;
 
@@ -71,7 +72,7 @@ public class Player : MonoBehaviour {
 		initialRotation = transform.rotation;
 
 		startTime =0;
-
+		lastCubeFace = 1;
 		pills_num = 0;
 
 		win = false;
@@ -106,6 +107,30 @@ public class Player : MonoBehaviour {
 	}
 
 	void moveLevel2(){
+
+		if (lastCubeFace != TeleportsMap2.cubeFace) {
+
+			GameObject ghostsGroupInFace = GameObject.Find (TeleportsMap2.cubeFace.ToString ());
+
+			for (int i = 0; i < 2; ++i) {
+				GameObject ghost = ghostsGroupInFace.transform.GetChild (i).gameObject;
+				ghost.SetActive (true);
+			}
+
+			for (int i = 1; i < 6; ++i) {
+				if (i != TeleportsMap2.cubeFace) {
+					GameObject ghostsGroup = GameObject.Find (i.ToString ());
+					for (int j = 0; j < 2; ++j) {
+						GameObject ghost = ghostsGroup.transform.GetChild (j).gameObject;
+						ghost.SetActive (false);
+					}
+				}
+			}
+
+			lastCubeFace = TeleportsMap2.cubeFace;
+		}
+
+
 		if(TeleportsMap2.cubeFace == 1) {
 			moveLevel1();
 		} else if(TeleportsMap2.cubeFace == 2) {
