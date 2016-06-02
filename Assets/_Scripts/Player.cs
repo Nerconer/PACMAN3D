@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -18,6 +19,11 @@ public class Player : MonoBehaviour {
 	public float x;
 	public float y;
 
+	public Transform winCanvas;
+	public Transform gameOverCanvas;
+	public Text finalScoreCanvas;
+	public GameObject final;
+	public GameObject info;
 
 	public Quaternion initialRotation;
 	public Vector3 initialPosition;
@@ -40,7 +46,13 @@ public class Player : MonoBehaviour {
 
 	bool isPowerUp = false;
 
+	private int pills_num;
+
 	private Animator animator;
+
+	private bool win;
+	private bool gameover;
+
 	// Use this for initialization
 	void Start () {
 		//anim = gameObject.GetComponent<Animator>();
@@ -56,6 +68,11 @@ public class Player : MonoBehaviour {
 		initialRotation = transform.rotation;
 
 		startTime =0;
+
+		pills_num = 0;
+
+		win = false;
+		gameover = false;
 
 
 	}
@@ -146,33 +163,67 @@ public class Player : MonoBehaviour {
 		} 
 
 	}
-	
+
+	void stopAllMusic() {
+		for (int i = 0; i < SoundController.source.Length; ++i) {
+			SoundController.source[i].Stop();
+		}
+	}
+
+	void Update() {
+		if(win) {
+			stopAllMusic();
+			if(Input.anyKeyDown) {
+				Time.timeScale = 1;
+				SceneManager.LoadScene(0);
+			}
+		}
+	}
+
 	// Update is called once per frame
 	void FixedUpdate () {
 
+		if(win) {
+			stopAllMusic();
+			Time.timeScale = 0;
+			move = false;
+			winCanvas.gameObject.SetActive(true);
+			//finalScoreCanvas.GetComponent<Text>().enabled = true;
+			final.SetActive(true);
+			info.SetActive(false);
+			finalScoreCanvas.text = "Final Score: " + GameController.score.ToString() + '\n';
+			finalScoreCanvas.text += "Time : " + (int) Time.time + '\n';
 
-		if (move && pauseDelay == 0) {
-			x = Input.GetAxisRaw ("Horizontal");
-			y = Input.GetAxisRaw ("Vertical");
 
-			if (GameController.level == 1) {
-				moveLevel1 ();
-			} else if (GameController.level == 2) {
-				moveLevel2 ();
+		} else if(gameover) {
+			stopAllMusic();
+			move = false;
+			gameOverCanvas.gameObject.SetActive(true);
+			if(Input.anyKeyDown) {
+				SceneManager.LoadScene(0);
 			}
-		} else if (pauseDelay > 0) {
-			--pauseDelay;
-			if (pauseDelay == 0) {
-				//isDeath = false;
-				isDeath = false;
-				transform.position = initialPosition;
-				transform.rotation = initialRotation;
+		} else {
+			if(move && pauseDelay == 0) {
+				x = Input.GetAxisRaw("Horizontal");
+				y = Input.GetAxisRaw("Vertical");
+
+				if (GameController.level == 1) {
+					moveLevel1 ();
+				} else if (GameController.level == 2) {
+					moveLevel2 ();
+				}
+			} else if (pauseDelay > 0) {
+				--pauseDelay;
+				if (pauseDelay == 0) {
+					//isDeath = false;
+					isDeath = false;
+					transform.position = initialPosition;
+					transform.rotation = initialRotation;
+				}
 			}
 
-		}
 
-
-		if ((int)Time.time >= startTime + 7 && isPowerUp) {
+			if((int)Time.time >= startTime + 7 && isPowerUp) {
 
 			isPowerUp = false;
 			if (GameController.level == 1) {
@@ -195,11 +246,11 @@ public class Player : MonoBehaviour {
 				for (int i = 0; i < ghosts.Length; ++i) {
 					if (ghosts [i].activeSelf && !ghosts [i].GetComponent<GhostInteligentLevel2> ().isDeath)
 						ghosts [i].GetComponent<GhostInteligentLevel2> ().toNormalState ();
-				}
-
+					}
+				
 				ghosts = GameObject.FindGameObjectsWithTag ("Ghost2");
 
-				for (int i = 0; i < ghosts.Length; ++i) {
+				for (int i= 0; i < ghosts.Length; ++i) {
 					if (ghosts [i].activeSelf && !ghosts [i].GetComponent<GhostWaypointController> ().isDeath)
 						ghosts [i].GetComponent<GhostWaypointController> ().toNormalState ();
 				}
@@ -215,12 +266,13 @@ public class Player : MonoBehaviour {
 						ghosts [i].GetComponent<GhostInteligent> ().Blink ();
 				}
 
-				ghosts = GameObject.FindGameObjectsWithTag ("Ghost");
+			ghosts = GameObject.FindGameObjectsWithTag ("Ghost");
 
 				for (int i = 0; i < ghosts.Length; ++i) {
 					if (ghosts [i].activeSelf && !ghosts [i].GetComponent<GhostController> ().isDeath)
 						ghosts [i].GetComponent<GhostController> ().Blink ();
 				}
+
 			} else {
 				GameObject[] ghosts = GameObject.FindGameObjectsWithTag ("Ghost Intelligent2");
 
@@ -234,12 +286,13 @@ public class Player : MonoBehaviour {
 				for (int i = 0; i < ghosts.Length; ++i) {
 					if (ghosts [i].activeSelf && !ghosts [i].GetComponent<GhostWaypointController> ().isDeath)
 						ghosts [i].GetComponent<GhostWaypointController> ().Blink ();
+
+					
+				} 
+
 				}
 			}
 		}
-
-
-
 	}
 
 	void OnTriggerEnter(Collider other) 
@@ -253,6 +306,10 @@ public class Player : MonoBehaviour {
 
 			//sc.soundEating();
 			sc.playMusic(1);
+			++pills_num;
+			Debug.Log("Pills num: " + pills_num);
+			if(GameController.level == 1 && pills_num == 272)
+				win = true;
 		}
 
 		else if (other.gameObject.CompareTag ("Ghost") && !isDeath)
@@ -287,6 +344,10 @@ public class Player : MonoBehaviour {
 					pauseDelay = 120;
 					sc.playMusic(2);
 					initialRotation = transform.rotation;
+					lives--;
+					Debug.Log("Lives "+lives);
+					if(lives == 0)
+						gameover = true;
 
 
 				}
@@ -327,6 +388,10 @@ public class Player : MonoBehaviour {
 					pauseDelay = 120;
 					initialRotation = transform.rotation; 
 					sc.playMusic(2);
+					lives--;
+					Debug.Log("Lives "+lives);
+					if(lives == 0)
+						gameover = true;
 
 				}
 			}
@@ -336,6 +401,7 @@ public class Player : MonoBehaviour {
 
 		else if (other.gameObject.CompareTag ("Power Up")) 
 		{
+			GameController.score += 50;
 			sc.playMusic(4);
 			isPowerUp = true;
 			startTime = (int)Time.time;
