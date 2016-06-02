@@ -220,15 +220,15 @@ public class Player : MonoBehaviour {
 				if (pauseDelay == 0) {
 					//isDeath = false;
 					isDeath = false;
-					if(GameController.level == 2)
+					if(GameController.level == 2) {
 						deadmap2 = true;
+						GameObject camera = GameObject.Find("MainCamera");
+						camera.transform.position = new Vector3(-0.45f, 24.0f, -7.0f);
+						camera.transform.eulerAngles = new Vector3(40.0f, 0.0f, 0.0f);
+						Debug.Log(camera.transform.position);
+					}
 					transform.position = initialPosition;
 					transform.rotation = initialRotation;
-
-					GameObject camera = GameObject.Find("MainCamera");
-					camera.transform.position = new Vector3(-0.45f, 24.0f, -7.0f);
-					camera.transform.eulerAngles = new Vector3(40.0f, 0.0f, 0.0f);
-					Debug.Log(camera.transform.position);
 				}
 			}
 
