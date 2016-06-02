@@ -172,7 +172,7 @@ public class Player : MonoBehaviour {
 		}
 
 
-		if ((int)Time.time >= startTime + 15 && isPowerUp) {
+		if ((int)Time.time >= startTime + 7 && isPowerUp) {
 
 			isPowerUp = false;
 
@@ -191,7 +191,7 @@ public class Player : MonoBehaviour {
 			}
 
 
-		} else if (isPowerUp && (int)Time.time >= startTime + 10) {
+		} else if (isPowerUp && (int)Time.time >= startTime + 4) {
 				GameObject[] ghosts = GameObject.FindGameObjectsWithTag ("Ghost Intelligent");
 
 				for (int i = 0; i < ghosts.Length; ++i) {
