@@ -136,7 +136,7 @@ public class GhostInteligent : MonoBehaviour {
 		//Speed, angular and aceleration modifications
 		agent.speed = 80;
 		agent.angularSpeed = 360;
-		agent.acceleration = 300;
+		agent.acceleration = 400;
 
 		isRunningAway = true;
 
@@ -158,7 +158,7 @@ public class GhostInteligent : MonoBehaviour {
 		//Speed, angular and aceleration modifications
 		agent.speed = 60;
 		agent.angularSpeed = 360;
-		agent.acceleration = 200;
+		agent.acceleration = 250;
 
 
 		if (!ScaredGhost.transform.FindChild ("Cylinder").gameObject.activeSelf) {
