@@ -97,7 +97,7 @@ public class TeleportsMap2 : MonoBehaviour {
 					camera.transform.position = new Vector3(-15f, 12.8f, -4.8f);
 					camera.transform.eulerAngles = rot;
 					CameraMovement.offset = camera.transform.position - pacman.transform.position;
-					pacman.transform.localEulerAngles = new Vector3(0, -90, 90);
+				pacman.transform.localEulerAngles = new Vector3(0, 0, 90);
 				} else if(x >= 4.0 && x < 5.0 && y > 14.3 && y < 14.7) {	// RIGHT
 					trans = new Vector3(5.4f, 14.5f, -4.9f);
 					pacman.GetComponent<Player>().transform.position = trans;
