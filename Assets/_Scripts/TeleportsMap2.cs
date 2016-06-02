@@ -21,15 +21,7 @@ public class TeleportsMap2 : MonoBehaviour {
 	void detectFace() {
 		if(y > 20 && y <= 21) {	// TOP
 			cubeFace = 1;
-		} /*else if(y == y) {	// FRONT
-			cubeFace = 2;
-		} else if(y == y) {	// LEFT
-			cubeFace = 3;
-		} else if(y == y) {	// RIGHT
-			cubeFace = 4;
-		} else if(y == y) {	// BACK
-			cubeFace = 5;
-		}*/
+		}
 	}
 
 	void detectTeleport() {

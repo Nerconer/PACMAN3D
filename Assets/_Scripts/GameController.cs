@@ -2,19 +2,10 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public struct boxPosition {
-	public float x1;
-	public float x2;
-	public float z1;
-	public float z2;
-}
-
 public class GameController : MonoBehaviour {
 
 	public GameObject readyText;
 	public float moveSpeedReadyT = 5;
-
-	boxPosition bposL, bposR;
 
 	public static int score;
 	public static int highScore;
@@ -55,47 +46,21 @@ public class GameController : MonoBehaviour {
 		posz = GameObject.Find("Pacman").GetComponent<Player>().transform.position.z;
 	}
 
-	void detectTeleport() {
+	void detectTeleport() 
+	{
 		Vector3 temp;
-		if(posx < bposL.x2 && posx >= bposL.x1 && posz <= bposL.z2 && posz >= bposL.z1) {
-			entrat = true;
-			if(level == 1) {
-				temp = new Vector3(133, 5, -14);
-				pacman.GetComponent<Player>().transform.position = temp;
-			}
-			else if (level == 2){
-				//temp = new Vector3(133, 5, -14);
-				//pacman.GetComponent<Player>().transform.position = temp;
-			}
-		} else if(posx > bposR.x1 && posx <= bposR.x2 && posz <= bposR.z2 && posz >= bposR.z1) {
-			if(level == 1) {
-				temp = new Vector3(-185, 5, -14);
-				pacman.GetComponent<Player>().transform.position = temp;
-			}
-			else if (level == 2){
-				//temp = new Vector3(133, 5, -14);
-				//pacman.GetComponent<Player>().transform.position = temp;
-			}
+
+		if(posx <= -180.0f && posx > -185.0f && posz < -11.0f && posz > -15.0f) {
+			temp = new Vector3(129, 5, -14);
+			pacman.GetComponent<Player>().transform.position = temp;
+		} else if(posx >= 130.0f && posx < 135.0f && posz < -11.0f && posz > -15.0f) {
+			temp = new Vector3(-179, 5, -14);
+			pacman.GetComponent<Player>().transform.position = temp;
 		} else {
 			entrat = false;
 		}
-	}
-		
-	void setLevel() {
-		if(level == 1) {
-			bposL.x1 = -190;
-			bposL.x2 = -188;
-			bposL.z1 = -16;
-			bposL.z2 = -10;
 
-			bposR.x1 = 138;
-			bposR.x2 = 140;
-			bposR.z1 = -16;
-			bposR.z2 = -10;
 
-		} else if(level == 2) {
-
-		}
 	}
 
 	// Use this for initialization
@@ -112,7 +77,6 @@ public class GameController : MonoBehaviour {
 		map = GameObject.Find("Map");
 		pacmanScript = pacman.GetComponent<Player>();
 		pacmanScriptMusic = map.GetComponent<SoundController>();
-		setLevel();
 	}
 	
 	// Update is called once per frame
