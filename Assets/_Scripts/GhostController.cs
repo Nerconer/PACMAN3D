@@ -145,7 +145,7 @@ public class GhostController : MonoBehaviour {
 		agent.acceleration = 300;
 		isDeath = true;
 		Time.timeScale = 0;
-		pauseDelay = 50;
+		pauseDelay = 10;
 		agent.Stop ();
 		agent.destination = waypoints[0].position;
 

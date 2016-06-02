@@ -131,7 +131,7 @@ public class GhostInteligent : MonoBehaviour {
 
 		isDeath = true;
 		Time.timeScale = 0;
-		pauseDelay = 50;
+		pauseDelay = 10;
 		agent.Stop ();
 		//Speed, angular and aceleration modifications
 		agent.speed = 80;

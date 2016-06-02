@@ -21,15 +21,7 @@ public class TeleportsMap2 : MonoBehaviour {
 	void detectFace() {
 		if(y > 20 && y <= 21) {	// TOP
 			cubeFace = 1;
-		} /*else if(y == y) {	// FRONT
-			cubeFace = 2;
-		} else if(y == y) {	// LEFT
-			cubeFace = 3;
-		} else if(y == y) {	// RIGHT
-			cubeFace = 4;
-		} else if(y == y) {	// BACK
-			cubeFace = 5;
-		}*/
+		}
 	}
 
 	void detectTeleport() {
@@ -105,7 +97,7 @@ public class TeleportsMap2 : MonoBehaviour {
 					camera.transform.position = new Vector3(-15f, 12.8f, -4.8f);
 					camera.transform.eulerAngles = rot;
 					CameraMovement.offset = camera.transform.position - pacman.transform.position;
-					pacman.transform.localEulerAngles = new Vector3(0, -90, 90);
+				pacman.transform.localEulerAngles = new Vector3(0, 0, 90);
 				} else if(x >= 4.0 && x < 5.0 && y > 14.3 && y < 14.7) {	// RIGHT
 					trans = new Vector3(5.4f, 14.5f, -4.9f);
 					pacman.GetComponent<Player>().transform.position = trans;

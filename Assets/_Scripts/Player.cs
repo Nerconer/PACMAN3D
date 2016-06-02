@@ -221,7 +221,8 @@ public class Player : MonoBehaviour {
 			GameController.score += 10;
 			other.gameObject.SetActive(false);
 
-			sc.soundEating();
+			//sc.soundEating();
+			sc.playMusic(1);
 		}
 
 		else if (other.gameObject.CompareTag ("Ghost") && !isDeath)
@@ -233,7 +234,7 @@ public class Player : MonoBehaviour {
 				if (ghostController.getIsRunningAway ()) {
 					animator.SetBool ("wakawaka", false);
 					ghostController.isDeathTime ();
-
+					sc.playMusic(5);
 				}
 				else {
 					animator.SetBool ("wakawaka", false);
@@ -254,6 +255,7 @@ public class Player : MonoBehaviour {
 					isDeath = true;
 					StartCoroutine(ResumeAfterSeconds(1));
 					pauseDelay = 120;
+					sc.playMusic(2);
 					initialRotation = transform.rotation;
 
 
@@ -270,7 +272,7 @@ public class Player : MonoBehaviour {
 				if (ghostIntelligent.getIsRunningAway ()) {
 					animator.SetBool ("wakawaka", false);
 					ghostIntelligent.isDeathTime ();
-
+					sc.playMusic(5);
 				}
 				else {
 					animator.SetBool ("wakawaka", false);
@@ -293,6 +295,7 @@ public class Player : MonoBehaviour {
 					StartCoroutine(ResumeAfterSeconds(1));
 					pauseDelay = 120;
 					initialRotation = transform.rotation; 
+					sc.playMusic(2);
 
 				}
 			}
@@ -302,21 +305,22 @@ public class Player : MonoBehaviour {
 
 		else if (other.gameObject.CompareTag ("Power Up")) 
 		{
+			sc.playMusic(4);
 			isPowerUp = true;
 			startTime = (int)Time.time;
 			other.gameObject.SetActive (false);
 			GameObject[] ghosts = GameObject.FindGameObjectsWithTag("Ghost Intelligent");
 
 			for (int i = 0; i < ghosts.Length; i++) {
-				if (ghosts [i].activeSelf)
-					ghosts [i].GetComponent<GhostInteligent> ().setIsRunningAway ();
+				if (ghosts[i].activeSelf)
+					ghosts[i].GetComponent<GhostInteligent>().setIsRunningAway();
 			}
 
 			ghosts = GameObject.FindGameObjectsWithTag ("Ghost");
 
 			for (int i = 0; i < ghosts.Length; i++) {
-				if (ghosts [i].activeSelf)
-					ghosts [i].GetComponent<GhostController> ().setRunningAway ();
+				if (ghosts[i].activeSelf)
+					ghosts[i].GetComponent<GhostController>().setRunningAway();
 			}
 
 		}
@@ -324,8 +328,8 @@ public class Player : MonoBehaviour {
 
 	}
 
-	void EndAnimationDeath() {
-
+	void EndAnimationDeath() 
+	{
 		animator.SetBool ("isDeath", false);
 
 	}

@@ -22,6 +22,11 @@ public class LoadOnClick : MonoBehaviour {
 		SceneManager.LoadScene(level);
 	}
 
+	public void quitGame() {
+		Application.Quit();
+		UnityEditor.EditorApplication.isPlaying = false;
+	}
+
 	// val = 0 -> instructions (true)
 	// val = 1 -> credits	(true)
 	// val = 2 -> instructions (false)
