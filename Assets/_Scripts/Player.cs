@@ -28,7 +28,7 @@ public class Player : MonoBehaviour {
 	private float pauseDelay = 0;
 
 	public string name;
-	static bool isDeath;
+	public static bool isDeath;
 
 	//public int score;
 	public int lives;
@@ -149,7 +149,9 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		
+
+		isDeath = animator.GetBool ("isDeath");
+
 		if (move && pauseDelay == 0) {
 			x = Input.GetAxisRaw ("Horizontal");
 			y = Input.GetAxisRaw ("Vertical");
@@ -162,7 +164,7 @@ public class Player : MonoBehaviour {
 		} else if (pauseDelay > 0) {
 			--pauseDelay;
 			if (pauseDelay == 0) {
-				isDeath = false;
+				//isDeath = false;
 				transform.position = initialPosition;
 				transform.rotation = initialRotation;
 			}
@@ -235,10 +237,23 @@ public class Player : MonoBehaviour {
 				}
 				else {
 					animator.SetBool ("wakawaka", false);
-					ghostController.returnToInitialPosition ();
+					GameObject[] ghosts = GameObject.FindGameObjectsWithTag("Ghost Intelligent");
+
+					for (int i = 0; i < ghosts.Length; i++) {
+						if (ghosts [i].activeSelf)
+							ghosts [i].GetComponent<GhostInteligent> ().returnToInitialPosition ();
+					}
+
+					ghosts = GameObject.FindGameObjectsWithTag ("Ghost");
+
+					for (int i = 0; i < ghosts.Length; i++) {
+						if (ghosts [i].activeSelf)
+							ghosts [i].GetComponent<GhostController> ().returnToInitialPosition ();
+					}
 					animator.SetBool ("isDeath", true);
-					pauseDelay = 150;
 					isDeath = true;
+					StartCoroutine(ResumeAfterSeconds(1));
+					pauseDelay = 120;
 					initialRotation = transform.rotation;
 
 
@@ -259,11 +274,25 @@ public class Player : MonoBehaviour {
 				}
 				else {
 					animator.SetBool ("wakawaka", false);
-					ghostIntelligent.returnToInitialPosition ();
+					GameObject[] ghosts = GameObject.FindGameObjectsWithTag("Ghost Intelligent");
+
+					for (int i = 0; i < ghosts.Length; i++) {
+						if (ghosts [i].activeSelf)
+							ghosts [i].GetComponent<GhostInteligent> ().returnToInitialPosition ();
+					}
+
+					ghosts = GameObject.FindGameObjectsWithTag ("Ghost");
+
+					for (int i = 0; i < ghosts.Length; i++) {
+						if (ghosts [i].activeSelf)
+							ghosts [i].GetComponent<GhostController> ().returnToInitialPosition ();
+					}
+
 					animator.SetBool ("isDeath", true);
-					pauseDelay = 150;
 					isDeath = true;
-					initialRotation = transform.rotation;
+					StartCoroutine(ResumeAfterSeconds(1));
+					pauseDelay = 120;
+					initialRotation = transform.rotation; 
 
 				}
 			}
@@ -300,7 +329,24 @@ public class Player : MonoBehaviour {
 		animator.SetBool ("isDeath", false);
 
 	}
-		
+
+
+	private IEnumerator ResumeAfterSeconds(int resumetime) // 3
+	{
+		Time.timeScale = 0.0001f;
+		float pauseEndTime = Time.realtimeSinceStartup + resumetime; // 10 + 4 = 13
+
+		float number3 = Time.realtimeSinceStartup + 1; // 10 + 1 = 11
+		float number2 = Time.realtimeSinceStartup + 2; // 10 + 2 = 12
+		float number1 = Time.realtimeSinceStartup + 3; // 10 + 3 = 13
+
+		while (Time.realtimeSinceStartup < pauseEndTime) // 10 < 13
+		{
+			yield return null;
+		}
+
+		Time.timeScale = 1;
+	}
 		
 }
 

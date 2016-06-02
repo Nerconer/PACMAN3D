@@ -12,7 +12,7 @@ public class GhostController : MonoBehaviour {
 
 	public float pauseDelay = 0;
 
-	public bool isCollision = false;
+	public bool isAgentStopped = false;
 	public int equalCoordenate = 2;
 
 	public bool isFirstPoint = true;
@@ -35,6 +35,8 @@ public class GhostController : MonoBehaviour {
 	Color lastColor;
 	Color basicColor;
 
+	Quaternion initialRotation;
+
 	private int timeBlink;
 
 	void Start() {
@@ -42,8 +44,11 @@ public class GhostController : MonoBehaviour {
 		NormalGhost = this.transform.GetChild (0).gameObject;
 		scaredAnimator = ScaredGhost.GetComponent<Animator>();
 		agent = GetComponent<NavMeshAgent> ();
+		agent.Stop ();
 		agent.destination = waypoints [current].position;
+		isAgentStopped = true;
 		initialPosition = transform.position;
+		initialRotation = transform.rotation;
 		basicColor = ScaredGhost.transform.FindChild ("Cylinder").GetComponent<Renderer> ().material.color;
 		lastColor = Color.black;
 		timeBlink = 0;
@@ -52,7 +57,12 @@ public class GhostController : MonoBehaviour {
 
 	void Update() {
 
-		if (Player.move) {
+		if (Player.move && !Player.isDeath) {
+
+			if (isAgentStopped) {
+				agent.Resume ();
+				isAgentStopped = false;
+			}
 
 			if (pauseDelay == 0) {
 
@@ -89,6 +99,11 @@ public class GhostController : MonoBehaviour {
 				}
 			}
 		}
+
+		if (Player.isDeath && !isAgentStopped) {
+			agent.Stop ();
+			isAgentStopped = true;
+		} 
 	}
 
 
@@ -101,7 +116,7 @@ public class GhostController : MonoBehaviour {
 		ScaredGhost.SetActive (true);
 		scaredAnimator.SetBool ("isScared", true);
 		//Speed, angular and aceleration modifications
-		agent.speed = 15;
+		agent.speed = 30;
 		agent.angularSpeed = 180;
 		agent.acceleration = 50;
 		
@@ -110,10 +125,8 @@ public class GhostController : MonoBehaviour {
 
 	//Pacman death
 	public void returnToInitialPosition() {
-		agent.Stop ();
 		agent.Warp (initialPosition);
-		Time.timeScale = 0;
-		pauseDelay = 50;
+		transform.rotation = initialRotation;
 	}
 
 	public bool getIsRunningAway() {
@@ -128,8 +141,8 @@ public class GhostController : MonoBehaviour {
 		ScaredGhost.transform.FindChild ("Plane").gameObject.SetActive (false);
 		//Speed, angular and aceleration modifications
 		agent.speed = 80;
-		agent.angularSpeed = 180;
-		agent.acceleration = 100;
+		agent.angularSpeed = 360;
+		agent.acceleration = 300;
 		isDeath = true;
 		Time.timeScale = 0;
 		pauseDelay = 50;

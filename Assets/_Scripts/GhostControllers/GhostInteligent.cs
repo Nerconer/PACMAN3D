@@ -30,6 +30,7 @@ public class GhostInteligent : MonoBehaviour {
 	Color lastColor;
 	Color basicColor;
 
+	bool isAgentStopped; 
 
 	GameObject Pacman;
 	void Start () {
@@ -46,7 +47,7 @@ public class GhostInteligent : MonoBehaviour {
 		basicColor = ScaredGhost.transform.FindChild ("Cylinder").GetComponent<Renderer> ().material.color;
 		lastColor = Color.black;
 		timeBlink = 0;
-	
+		isAgentStopped = false;
 	}
 	
 	// Update is called once per frame
@@ -54,7 +55,13 @@ public class GhostInteligent : MonoBehaviour {
 
 
 		remainningDistance = agent.remainingDistance;
-		if (Player.move) {
+		if (Player.move && !Player.isDeath) {
+
+			if (isAgentStopped) {
+				agent.Resume ();
+				isAgentStopped = false;
+			}
+
 			if (pauseDelay == 0) {
 				if (!isRunningAway)
 					agent.destination = Pacman.transform.position;
@@ -69,12 +76,14 @@ public class GhostInteligent : MonoBehaviour {
 					Time.timeScale = 1;
 					agent.Resume ();
 					agent.destination = returnPosition.position;
-					print ("play de nuevo");
 				}
 
 			}
 		}
-
+		else if (Player.isDeath && !isAgentStopped) {
+			agent.Stop ();
+			isAgentStopped = true;
+		} 
 	}
 
 
@@ -105,12 +114,8 @@ public class GhostInteligent : MonoBehaviour {
 
 
 	public void returnToInitialPosition() {
-		
-		agent.Stop ();
 		agent.Warp (initialPosition);
 		transform.rotation = initialRotation;
-		Time.timeScale = 0;
-		pauseDelay = 50;
 	}
 
 
@@ -128,9 +133,10 @@ public class GhostInteligent : MonoBehaviour {
 		Time.timeScale = 0;
 		pauseDelay = 50;
 		agent.Stop ();
-		agent.speed = 60;
+		//Speed, angular and aceleration modifications
+		agent.speed = 80;
 		agent.angularSpeed = 360;
-		agent.acceleration = 150;
+		agent.acceleration = 300;
 
 		isRunningAway = true;
 
