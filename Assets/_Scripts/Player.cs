@@ -379,7 +379,7 @@ public class Player : MonoBehaviour {
 					for (int i = 0; i < ghosts.Length; i++) {
 						if(ghosts[i].activeSelf) {
 							ghosts[i].GetComponent<GhostController>().returnToInitialPosition();
-							ghosts [i].GetComponent<GhostInteligent> ().toNormalState ();
+							ghosts [i].GetComponent<GhostController> ().toNormalState ();
 						}
 					}
 					animator.SetBool ("isDeath", true);
@@ -425,7 +425,7 @@ public class Player : MonoBehaviour {
 					for (int i = 0; i < ghosts.Length; i++) {
 						if(ghosts[i].activeSelf) {
 							ghosts[i].GetComponent<GhostController>().returnToInitialPosition();
-							ghosts [i].GetComponent<GhostInteligent> ().toNormalState ();
+							ghosts [i].GetComponent<GhostController> ().toNormalState ();
 						}
 					}
 
