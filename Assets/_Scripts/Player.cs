@@ -254,7 +254,8 @@ public class Player : MonoBehaviour {
 						TeleportsMap2.cubeFace = 1;
 					}
 					transform.position = initialPosition;
-					transform.rotation = initialRotation;
+					Vector3 tmp = new Vector3(0, 0, 0);
+					transform.eulerAngles = tmp;
 				}
 			}
 
@@ -367,15 +368,19 @@ public class Player : MonoBehaviour {
 					GameObject[] ghosts = GameObject.FindGameObjectsWithTag("Ghost Intelligent");
 
 					for (int i = 0; i < ghosts.Length; i++) {
-						if (ghosts [i].activeSelf)
-							ghosts [i].GetComponent<GhostInteligent> ().returnToInitialPosition ();
+						if(ghosts[i].activeSelf) {
+							ghosts[i].GetComponent<GhostInteligent>().returnToInitialPosition();
+							ghosts [i].GetComponent<GhostInteligent> ().toNormalState ();
+						}
 					}
 
 					ghosts = GameObject.FindGameObjectsWithTag ("Ghost");
 
 					for (int i = 0; i < ghosts.Length; i++) {
-						if (ghosts [i].activeSelf)
-							ghosts [i].GetComponent<GhostController> ().returnToInitialPosition ();
+						if(ghosts[i].activeSelf) {
+							ghosts[i].GetComponent<GhostController>().returnToInitialPosition();
+							ghosts [i].GetComponent<GhostInteligent> ().toNormalState ();
+						}
 					}
 					animator.SetBool ("isDeath", true);
 					isDeath = true;
@@ -409,15 +414,19 @@ public class Player : MonoBehaviour {
 					GameObject[] ghosts = GameObject.FindGameObjectsWithTag("Ghost Intelligent");
 
 					for (int i = 0; i < ghosts.Length; i++) {
-						if (ghosts [i].activeSelf)
-							ghosts [i].GetComponent<GhostInteligent> ().returnToInitialPosition ();
+						if(ghosts[i].activeSelf) {
+							ghosts[i].GetComponent<GhostInteligent>().returnToInitialPosition();
+							ghosts [i].GetComponent<GhostInteligent> ().toNormalState ();
+						}
 					}
 
 					ghosts = GameObject.FindGameObjectsWithTag ("Ghost");
 
 					for (int i = 0; i < ghosts.Length; i++) {
-						if (ghosts [i].activeSelf)
-							ghosts [i].GetComponent<GhostController> ().returnToInitialPosition ();
+						if(ghosts[i].activeSelf) {
+							ghosts[i].GetComponent<GhostController>().returnToInitialPosition();
+							ghosts [i].GetComponent<GhostInteligent> ().toNormalState ();
+						}
 					}
 
 					animator.SetBool ("isDeath", true);
