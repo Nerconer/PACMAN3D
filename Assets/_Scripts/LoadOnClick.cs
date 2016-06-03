@@ -24,7 +24,7 @@ public class LoadOnClick : MonoBehaviour {
 
 	public void quitGame() {
 		Application.Quit();
-		UnityEditor.EditorApplication.isPlaying = false;
+		//UnityEditor.EditorApplication.isPlaying = false;
 	}
 
 	// val = 0 -> instructions (true)
